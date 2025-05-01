@@ -1,0 +1,20 @@
+html, body {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+.target {
+background-color: rgba(0, 170.0000050663948, 0, 1);
+box-shadow: 0 0 0 rgb(0, 0, 0)px 0;
+transform: rotate(0deg);
+left: calc(0px + 23.728813230991364%);
+width: calc(394px + 0%);
+top: calc(0px + 24.88262951374054%);
+position: relative;
+min-width: calc(394px + 0%);
+overflow: visible;
+height: calc(171px + 0%);
+min-height: calc(171px + 0%);
+z-index: 1;
+}
