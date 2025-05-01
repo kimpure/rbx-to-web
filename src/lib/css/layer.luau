@@ -19,8 +19,8 @@ layer_parser['box-shadow'] = function(dom: dom.Dom)
             return `0 0 0 {size}px {rgb}`
         end
     })[dom.border_mode](
-        rgb.from_color(dom.border_color), 
-        dom.border_size
+        dom.border_size,
+        rgb.from_color(dom.border_color)
     )
 end
 layer_parser['transform'] = function(dom: dom.Dom)
