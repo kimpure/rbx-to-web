@@ -1,7 +1,7 @@
 local net = require('@lune/net')
 local fs = require('@lune/fs')
 
-local css = require('../rbx/css')
+local css = require('../rbx/css')()
 
 fs.writeFile('tests/web/view/style.css', [[
 html, body {

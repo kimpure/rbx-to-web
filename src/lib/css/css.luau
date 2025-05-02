@@ -1,6 +1,6 @@
 local layer = require('./layer')
 
-local function from_layer(layer: layer.Layer)
+local function from_layer(layer: layer.Layer): string
     local css = ''
 
     for k, v in layer do
