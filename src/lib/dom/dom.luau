@@ -73,31 +73,13 @@ gui_object_parser['LayoutOrder'] = function(dom: GuiObjectDom, value: number)
     dom.layout_order = value
 end
 gui_object_parser['Position'] = function(dom: GuiObjectDom, value: UDim2)
-    dom.position = {
-        x = {
-            offset = value.X.Offset,
-            scale = value.X.Scale,
-        },
-        y = {
-            offset = value.Y.Offset,
-            scale = value.Y.Scale,
-        },
-    }
+    dom.position = ui2.from_udim2(value)
 end
 gui_object_parser['Rotation'] = function(dom: GuiObjectDom, value: number)
     dom.rotation = value
 end
 gui_object_parser['Size'] = function(dom: GuiObjectDom, value: UDim2)
-    dom.size = {
-        x = {
-            offset = value.X.Offset,
-            scale = value.X.Scale
-        },
-        y = {
-            offset = value.Y.Offset,
-            scale = value.Y.Scale
-        }
-    }
+    dom.size = ui2.from_udim2(value)
 end
 gui_object_parser['SizeConstraint'] = function(dom: GuiObjectDom, value: Enum.SizeConstraint)
     dom.size_constraint = value.Name :: SizeConstraint
