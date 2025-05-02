@@ -1,5 +1,6 @@
-local ui2 = require('./utils/ui2')
 local color = require('./utils/color')
+local ui2 = require('./utils/ui2')
+local vec2 = require('./utils/vec2')
 
 export type AutomaticSize = "None" 
     | "X" 
@@ -14,11 +15,9 @@ export type SizeConstraint = "RelativeXY"
     | "RelativeXX"
     | "RelativeYY"
 
-export type Vec2 = { x: number, y: number }
-
 export type GuiObjectDomProps = {
     active: boolean,
-    anchord_point: Vec2,
+    anchord_point: vec2.Vec2,
     automatic_size: AutomaticSize,
     background_color: color.Color,
     background_transparency: number,
@@ -43,7 +42,7 @@ gui_object_parser['Active'] = function(dom: GuiObjectDom, value: boolean)
     dom.active = value
 end
 gui_object_parser['AnchorPoint'] = function(dom: GuiObjectDom, value: Vector2)
-    dom.anchord_point = { x = value.X, y = value.Y }
+    dom.anchord_point = vec2.create(value.X, value.Y)
 end
 gui_object_parser['AutomaticSize'] = function(dom: GuiObjectDom, value: Enum.AutomaticSize)
     dom.automatic_size = value.Name :: AutomaticSize
