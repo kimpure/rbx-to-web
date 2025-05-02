@@ -1,4 +1,4 @@
-local vec2 = require('./utils/vec2')
+local ui2 = require('./utils/ui2')
 local color = require('./utils/color')
 
 export type AutomaticSize = "None" 
@@ -14,8 +14,11 @@ export type SizeConstraint = "RelativeXY"
     | "RelativeXX"
     | "RelativeYY"
 
+export type Vec2 = { x: number, y: number }
+
 export type GuiObjectDomProps = {
     active: boolean,
+    anchord_point: Vec2,
     automatic_size: AutomaticSize,
     background_color: color.Color,
     background_transparency: number,
@@ -25,9 +28,9 @@ export type GuiObjectDomProps = {
     clips_descendants: boolean,
     interactable: boolean,
     layout_order: number,
-    position: vec2.Vec2,
+    position: ui2.Ui2,
     rotation: number,
-    size: vec2.Vec2,
+    size: ui2.Ui2,
     size_constraint: SizeConstraint,
     visible: boolean,
     z_index: number,
@@ -40,16 +43,7 @@ gui_object_parser['Active'] = function(dom: GuiObjectDom, value: boolean)
     dom.active = value
 end
 gui_object_parser['AnchorPoint'] = function(dom: GuiObjectDom, value: Vector2)
-    dom.position = {
-        x = {
-            offset = dom.position.x.offset - dom.size.x.offset * value.X,
-            scale = dom.position.x.scale - dom.size.x.scale * value.X,
-        },
-        y = {
-            offset = dom.position.y.offset - dom.size.y.offset * value.Y,
-            scale = dom.position.y.scale - dom.size.y.scale * value.Y            
-        },
-    }
+    dom.anchord_point = { x = value.X, y = value.Y }
 end
 gui_object_parser['AutomaticSize'] = function(dom: GuiObjectDom, value: Enum.AutomaticSize)
     dom.automatic_size = value.Name :: AutomaticSize
@@ -81,12 +75,12 @@ end
 gui_object_parser['Position'] = function(dom: GuiObjectDom, value: UDim2)
     dom.position = {
         x = {
-            offset = dom.position.x.offset + value.X.Offset,
-            scale = dom.position.x.scale + value.X.Scale,
+            offset = value.X.Offset,
+            scale = value.X.Scale,
         },
         y = {
-            offset = dom.position.y.offset + value.Y.Offset,
-            scale = dom.position.y.scale + value.Y.Scale,
+            offset = value.Y.Offset,
+            scale = value.Y.Scale,
         },
     }
 end
@@ -119,11 +113,9 @@ local function from_gui_object(gui_object: GuiObject)
     local dom = setmetatable({
         background_color = color.zero,
         border_color = color.zero,
-        position = vec2.zero,
-        size = vec2.zero,
+        position = ui2.zero,
+        size = ui2.zero,
     }, {}) :: GuiObjectDom
-
-    gui_object_parser.Size(dom, gui_object.Size)
     
     for propname: keyof<typeof(gui_object_parser)>, callback in gui_object_parser :: any do
         callback(dom, (gui_object :: any)[propname])

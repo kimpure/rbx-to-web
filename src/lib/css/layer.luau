@@ -24,7 +24,7 @@ layer_parser['box-shadow'] = function(dom: dom.GuiObjectDom)
     )
 end
 layer_parser['transform'] = function(dom: dom.GuiObjectDom)
-    return `rotate({dom.rotation}deg)`
+    return `rotate({dom.rotation}deg) translate({dom.anchord_point.x * 100}%, {dom.anchord_point.y * 100}%)`
 end
 layer_parser['position'] = function(dom: dom.GuiObjectDom)
     return 'relative'
