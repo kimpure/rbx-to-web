@@ -1,6 +1,8 @@
-local types = require('../types')
-
-export type Color = types.Color
+export type Color = {
+    r: number,
+    g: number,
+    b: number,
+}
 
 local Color = {}
 

@@ -1,13 +1,41 @@
-local types = require('../types')
-
-export type AutomaticSize = types.AutomaticSize
-export type BorderMode = types.BorderMode
-export type GuiObjectDom = types.GuiObjectDom
-export type SizeConstraint = types.SizeConstraint
-
 local color = require('../utils/color')
 local ui2 = require('../utils/ui2')
 local vec2 = require('../utils/vec2')
+
+export type AutomaticSize = "None" 
+    | "X" 
+    | "Y" 
+    | "XY"
+
+export type BorderMode = "Outline"
+    | "Middle"
+    | "Inset"
+
+export type SizeConstraint = "RelativeXY"
+    | "RelativeXX"
+    | "RelativeYY"
+
+export type GuiObjectDomProps = {
+    active: boolean,
+    anchord_point: vec2.Vec2,
+    automatic_size: AutomaticSize,
+    background_color: color.Color,
+    background_transparency: number,
+    border_color: color.Color,
+    border_mode: BorderMode,
+    border_size: number,
+    clips_descendants: boolean,
+    interactable: boolean,
+    layout_order: number,
+    position: ui2.Ui2,
+    rotation: number,
+    size: ui2.Ui2,
+    size_constraint: SizeConstraint,
+    visible: boolean,
+    z_index: number,
+}
+
+export type GuiObjectDom = typeof(setmetatable({} :: GuiObjectDomProps, {} :: any))
 
 local gui_object_parser = {}
 gui_object_parser['Active'] = function(dom: GuiObjectDom, value: boolean)

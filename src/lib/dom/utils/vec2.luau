@@ -1,6 +1,7 @@
-local types = require('../types')
-
-export type Vec2 = types.Vec2
+export type Vec2 = { 
+    x: number, 
+    y: number,
+}
 
 local Vec2 = {}
 

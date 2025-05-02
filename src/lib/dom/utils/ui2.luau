@@ -1,6 +1,13 @@
-local types = require('../types')
-
-export type Ui2 = types.Ui2
+export type Ui2 = {
+    x: {
+        offset: number,
+        scale: number,
+    },
+    y: {
+        offset: number,
+        scale: number,
+    },
+}
 
 local Ui2 = {}
 

@@ -1,8 +1,7 @@
-local types = require('./types')
-
-export type GuiObjectDom = types.GuiObjectDom
 
 local gui_object_parser = require('./parser/gui_object')
+
+export type GuiObjectDom = gui_object_parser.GuiObjectDom
 
 local function from_gui_object(gui_object: GuiObject)
     local dom = setmetatable({}, {}) :: GuiObjectDom
