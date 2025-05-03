@@ -1,6 +1,6 @@
 {
-	"languageMode": "strict",
-	"lint": {
-		"LocalShadow": false
-	}
+    "languageMode": "strict",
+    "lint": {
+        "LocalShadow": false
+    }
 }

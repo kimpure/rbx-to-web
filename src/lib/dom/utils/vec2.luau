@@ -5,8 +5,8 @@ export type Vec2 = {
 
 local Vec2 = {}
 
-function Vec2.create(x: number, y: number): Vec2
-    return { x = x, y = y }
+function Vec2.from_vector2(vector2: Vector2): Vec2
+    return { x = vector2.X, y = vector2.Y }
 end
 
 return Vec2

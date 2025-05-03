@@ -37,12 +37,17 @@ export type GuiObjectDomProps = {
 
 export type GuiObjectDom = typeof(setmetatable({} :: GuiObjectDomProps, {} :: any))
 
+-- export type UiAspectRatioConstraintProps = {}
+
+-- local ui_aspect_ratio_constraint_parser = {}
+-- ui_aspect_ratio_constraint_parser
+
 local gui_object_parser = {}
 gui_object_parser['Active'] = function(dom: GuiObjectDom, value: boolean)
     dom.active = value
 end
 gui_object_parser['AnchorPoint'] = function(dom: GuiObjectDom, value: Vector2)
-    dom.anchord_point = vec2.create(value.X, value.Y)
+    dom.anchord_point = vec2.from_vector2(value)
 end
 gui_object_parser['AutomaticSize'] = function(dom: GuiObjectDom, value: Enum.AutomaticSize)
     dom.automatic_size = value.Name :: AutomaticSize
@@ -93,7 +98,7 @@ end
 local function from_gui_object(gui_object: GuiObject)
     local dom = setmetatable({}, {}) :: GuiObjectDom
     
-    for propname, callback in gui_object_parser :: { [keyof<typeof(gui_object_parser)>]: any } do
+    for propname, callback in gui_object_parser :: { [keyof<typeof(gui_object_parser)>]: (dom: GuiObjectDom, value: any) -> () } do
         callback(dom, (gui_object :: any)[propname])
     end
 
