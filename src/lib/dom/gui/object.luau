@@ -37,7 +37,6 @@ export type GuiObjectDomProps = {
 
 export type GuiObjectDomImpl = {
     __index: GuiObjectDomImpl,
-    new: () -> GuiObjectDom,
     from_gui_object: (gui_object: GuiObject) -> GuiObjectDom,
 }
 
@@ -99,12 +98,8 @@ end
 local GuiObject = {} :: GuiObjectDomImpl
 GuiObject.__index = GuiObject
 
-function GuiObject.new()
-    return setmetatable({}, {}) :: GuiObjectDom
-end
-
 function GuiObject.from_gui_object(gui_object: GuiObject)
-    local dom = GuiObject.new()
+    local dom = setmetatable({}, {}) :: GuiObjectDom
     
     for propname, callback in gui_object_parser :: { [keyof<typeof(gui_object_parser)>]: (dom: GuiObjectDom, value: any) -> () } do
         callback(dom, (gui_object :: any)[propname])

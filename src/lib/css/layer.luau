@@ -1,5 +1,5 @@
 local calc = require('./utils/calc')
-local dom = require('../dom/dom')
+local dom = require('../dom/gui/object')
 local rgb = require('./utils/rgb')
 local rgba = require('./utils/rgba')
 
