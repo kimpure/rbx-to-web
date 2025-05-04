@@ -1,4 +1,4 @@
-local layer = require('./layer')
+local layer = require('./parser')
 
 local function from_layer(layer: layer.Layer): string
     local css = ''

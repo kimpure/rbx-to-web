@@ -1,3 +1,4 @@
+--//#TODO: https://create.roblox.com/docs/ko-kr/reference/engine/classes/UIDragDetector
 local ui = require('../utils/ui')
 
 export type DominantAxis = "Width" | "Height"

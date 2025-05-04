@@ -35,12 +35,7 @@ export type GuiObjectDomProps = {
     z_index: number,
 }
 
-export type GuiObjectDomImpl = {
-    __index: GuiObjectDomImpl,
-    from_gui_object: (gui_object: GuiObject) -> GuiObjectDom,
-}
-
-export type GuiObjectDom = typeof(setmetatable({} :: GuiObjectDomProps, {} :: GuiObjectDomImpl))
+export type GuiObjectDom = typeof(setmetatable({} :: GuiObjectDomProps, {}))
 
 local gui_object_parser = {}
 gui_object_parser['Active'] = function(dom: GuiObjectDom, value: boolean)
@@ -95,10 +90,7 @@ gui_object_parser['ZIndex'] = function(dom: GuiObjectDom, value: number)
     dom.z_index = value
 end
 
-local GuiObject = {} :: GuiObjectDomImpl
-GuiObject.__index = GuiObject
-
-function GuiObject.from_gui_object(gui_object: GuiObject)
+local function from_gui_object(gui_object: GuiObject)
     local dom = setmetatable({}, {}) :: GuiObjectDom
     
     for propname, callback in gui_object_parser :: { [keyof<typeof(gui_object_parser)>]: (dom: GuiObjectDom, value: any) -> () } do
@@ -108,4 +100,6 @@ function GuiObject.from_gui_object(gui_object: GuiObject)
     return dom
 end
 
-return GuiObject
+return {
+    from_gui_object = from_gui_object,
+}
