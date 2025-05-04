@@ -1,15 +1,20 @@
-local layer = require('./layer')
+--// TODO: add token and css
 
-local function from_layer(layer: layer.Layer): string
+local layer = require('./layer')
+local gui_object_parser = require('./parser/gui_object')
+
+local function from_gui_object(gui_object: GuiObject): string
     local css = ''
 
-    for k, v in layer do
-        css ..= `{k}: {v};\n`
+    local gui_object_layer, tokens = layer.layer_gui_object(gui_object)
+
+    for k, v in gui_object_parser do
+        css ..= `{k}: {v(gui_object_layer)};\n`
     end
 
     return css
 end
 
 return {
-    from_layer = from_layer,
+    from_gui_object = from_gui_object,
 }

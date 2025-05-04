@@ -30,7 +30,7 @@ ui_corner_parser['CornerRadius'] = function(dom: UICornerDom, value: UDim)
     dom.corner_radius = ui.from_udim(value)
 end
 
-local function from_ui_aspect_ratio_constraint(ui_aspect_ratio_constraint)
+local function from_ui_aspect_ratio_constraint(ui_aspect_ratio_constraint: UIAspectRatioConstraint)
     local dom = setmetatable({}, {}) :: UIAspectRatioConstraintDom
 
     for propname, callback in ui_aspect_ratio_constraint_parser :: { [keyof<typeof(ui_aspect_ratio_constraint_parser)>]: (dom: UIAspectRatioConstraintDom, value: any) -> () } do

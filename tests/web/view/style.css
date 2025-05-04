@@ -11,10 +11,11 @@ transform: rotate(0deg) translate(0%, 0%);
 left: calc(0px + 23.728813230991364%);
 width: calc(394px + 0%);
 top: calc(0px + 24.88262951374054%);
-position: relative;
-min-width: calc(394px + 0%);
 overflow: visible;
+min-width: calc(394px + 0%);
+position: relative;
 height: calc(171px + 0%);
 min-height: calc(171px + 0%);
 z-index: 1;
+aspect-ratio: nil;
 }

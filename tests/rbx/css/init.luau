@@ -1,10 +1,10 @@
-local layer = require('./layer/layer')
+local dom = require('../dom/dom')
 local css = require('../../../src/lib/css/css')
 
 return function(use_debug: boolean?): string
     if use_debug then
-        print(css.from_layer(layer))
+        print(css.from_gui_object(dom))
     end
 
-    return css.from_layer(layer) :: string
+    return css.from_gui_object(dom) :: string
 end
