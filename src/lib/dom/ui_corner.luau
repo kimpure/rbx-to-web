@@ -11,7 +11,7 @@ ui_corner_parser['CornerRadius'] = function(dom: UICornerDom, value: UDim)
     dom.corner_radius = ui.from_udim(value)
 end
 
-local function from_ui_corner(ui_corner: UICorner)
+local function from_ui_corner(ui_corner: UICorner): UICornerDom
     local dom = setmetatable({}, {}) :: UICornerDom
 
     for propname, callback in ui_corner_parser :: { [string]: (dom: UICornerDom, value: any) -> () } do

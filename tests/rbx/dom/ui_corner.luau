@@ -8,7 +8,7 @@ export type DomProps = Frame
 local fs = require('@lune/fs')
 local roblox = require('@lune/roblox')
 
-local test_asset = fs.readFile('tests/rbx/assets/gui_object.rbxm')
+local test_asset = fs.readFile('tests/rbx/assets/ui_corner.rbxm')
 
 local dom = roblox.deserializeModel(test_asset) :: any
 

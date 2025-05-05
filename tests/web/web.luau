@@ -1,7 +1,10 @@
 local net = require('@lune/net')
 local fs = require('@lune/fs')
 
-local css = require('../rbx/css')()
+local gui_object_css = require('../rbx/css/gui_object')()
+local ui_corner_css = require('../rbx/css/ui_corner')()
+
+local css = gui_object_css .. '\n' .. ui_corner_css
 
 fs.writeFile('tests/web/view/style.css', [[
 html, body {
