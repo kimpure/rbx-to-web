@@ -1,4 +1,4 @@
-local dom = require('../../rbx/dom/dom')
+local dom = require('../../rbx/dom/gui_object')
 local css = require('../../../src/lib/css/css')
 
 return function(use_debug: boolean?): string

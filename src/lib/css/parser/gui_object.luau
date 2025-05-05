@@ -31,10 +31,10 @@ gui_object_css_parser['position'] = function(dom: gui_object_dom.GuiObjectDom)
     return 'relative'
 end
 gui_object_css_parser['top'] = function(dom: gui_object_dom.GuiObjectDom)
-    return calc.from_vec(dom.position.y)
+    return calc.from_ui(dom.position.y)
 end
 gui_object_css_parser['left'] = function(dom: gui_object_dom.GuiObjectDom)
-    return calc.from_vec(dom.position.x)
+    return calc.from_ui(dom.position.x)
 end
 gui_object_css_parser['overflow'] = function(dom: gui_object_dom.GuiObjectDom)
     return dom.clips_descendants and 'hidden' or 'visible'
@@ -43,35 +43,35 @@ gui_object_css_parser['height'] = function(dom: gui_object_dom.GuiObjectDom)
     if dom.automatic_size == 'Y' or dom.automatic_size == 'XY' or dom.size_constraint == 'RelativeXX' then
         return 'auto'
     else
-        return calc.from_vec(dom.size.y)
+        return calc.from_ui(dom.size.y)
     end
 end
 gui_object_css_parser['width'] = function(dom: gui_object_dom.GuiObjectDom)
     if dom.automatic_size == 'X' or dom.automatic_size == 'XY' or dom.size_constraint == 'RelativeYY' then
         return 'auto'
     else
-        return calc.from_vec(dom.size.x)
+        return calc.from_ui(dom.size.x)
     end
 end
 gui_object_css_parser['min-height'] = function(dom: gui_object_dom.GuiObjectDom)
     if dom.size_constraint == 'RelativeXX' then
         return nil :: any
     end
-    return calc.from_vec(dom.size.y)
+    return calc.from_ui(dom.size.y)
 end
 gui_object_css_parser['min-width'] = function(dom: gui_object_dom.GuiObjectDom)
     if dom.size_constraint == 'RelativeYY' then
         return nil :: any
     end
-    return calc.from_vec(dom.size.x)
+    return calc.from_ui(dom.size.x)
 end
 gui_object_css_parser['aspect-ratio'] = function(dom: gui_object_dom.GuiObjectDom)
     if dom.size_constraint == 'RelativeXX' then
-        return `{calc.from_vec(dom.size.x)} / {calc.from_vec(dom.size.y)}`
+        return `{calc.from_ui(dom.size.x)} / {calc.from_ui(dom.size.y)}`
     end
     
     if dom.size_constraint == 'RelativeYY' then
-        return `{calc.from_vec(dom.size.x)} / {calc.from_vec(dom.size.y)}`
+        return `{calc.from_ui(dom.size.x)} / {calc.from_ui(dom.size.y)}`
     end
 
     return nil :: any
