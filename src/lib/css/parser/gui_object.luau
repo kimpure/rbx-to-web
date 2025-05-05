@@ -1,5 +1,5 @@
 local calc = require('../utils/calc')
-local gui_object_dom = require('../../dom/gui/object')
+local gui_object_dom = require('../../dom/gui_object')
 local rgb = require('../utils/rgb')
 local rgba = require('../utils/rgba')
 
@@ -80,4 +80,4 @@ gui_object_css_parser['z-index'] = function(dom: gui_object_dom.GuiObjectDom)
     return dom.z_index
 end
 
-return gui_object_css_parser :: { [keyof<typeof(gui_object_css_parser)> ]: (dom: gui_object_dom.GuiObjectDom) -> () }
+return gui_object_css_parser :: { [string]: (dom: gui_object_dom.GuiObjectDom) -> any }

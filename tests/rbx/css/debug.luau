@@ -1,1 +1,1 @@
-require('./')(true)
+require('./css')(true)
