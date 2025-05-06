@@ -16,7 +16,7 @@ ui_corner["border-radius"] = function(doms: { gui_object: gui_object_dom.GuiObje
 	radius.offset = offset
 	radius.scale = scale
 	
-	return calc.from_ui(radius)
+	return calc.from_ui(radius), 2
 end
 
 return ui_corner :: { [string]: (dom: { gui_object: gui_object_dom.GuiObjectDom, ui_corner: ui_corner_dom.UICornerDom }) -> string }

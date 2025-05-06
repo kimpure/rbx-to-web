@@ -51,8 +51,9 @@ end
 
 function gui_object_css.get_css(self)
 	local css = ""
+	local levels = {}
 
-	for dom_name, dom_info in (self.doms :: any) :: { [string]: { dom: { [string]: any }, parser: { [string]: (...any) -> string } } } do
+	for dom_name, dom_info in (self.doms :: any) :: { [string]: { dom: { [string]: any }, parser: { [string]: (...any) -> (string, number) } } } do
 		local props = {}
 
 		for extend_dom_name, _ in extends[dom_name] do
@@ -60,7 +61,16 @@ function gui_object_css.get_css(self)
 		end
 		
 		for css_prop_name, css_format_callback in dom_info.parser do
-			local parse_css = css_format_callback(props)
+			local parse_css, level = css_format_callback(props)
+			level = level or 1
+
+			if not levels[css_prop_name] then
+				levels[css_prop_name] = level
+			end
+
+			if levels[css_prop_name] > level then
+				continue
+			end
 
 			if not parse_css then
 				continue
