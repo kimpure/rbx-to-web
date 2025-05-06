@@ -1,6 +1,6 @@
-local ui2 = require('../../dom/utils/ui2')
+local ui = require('../../dom/utils/ui')
 
-local function from_ui(ui: typeof(ui2.zero.x))
+local function from_ui(ui: ui.Ui)
     return `calc({ui.offset}px + {ui.scale * 100}%)`
 end
 

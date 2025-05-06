@@ -17,7 +17,6 @@ position: relative;
 height: calc(171px + 0%);
 min-height: calc(171px + 0%);
 z-index: 1;
-aspect-ratio: nil;
 
 border-radius: calc(8px + 100%);
 }
