@@ -3,32 +3,62 @@ local gui_object_parser = require('./parser/gui_object')
 local ui_corner_dom = require('../dom/ui_corner')
 local ui_corner_parser = require('./parser/ui_corner')
 
-local function parser_css(dom: any)
+export type GuiObjectCss = typeof(setmetatable({} :: {
+    doms: {
+        gui_object_dom: {
+            dom: gui_object_dom.GuiObjectDom,
+            parser: typeof(gui_object_parser),
+        },
+        ui_corner_dom: {
+            dom: ui_corner_dom.UICornerDom,
+            parser: typeof(ui_corner_parser)
+        }?,
+    }
+}, {} :: GuiObjectCssImpl))
+
+export type GuiObjectCssImpl = {
+    __index: GuiObjectCssImpl,
+    from_gui_object: (gui_object: GuiObject) -> GuiObjectCss,
+    get_css: (self: GuiObjectCss) -> string,
+    with_ui_corner: (self: GuiObjectCss, ui_corner: UICorner) -> GuiObjectCss,
+}
+
+local gui_object_css = {} :: GuiObjectCssImpl
+gui_object_css.__index = gui_object_css
+
+function gui_object_css.from_gui_object(gui_object: GuiObject)
+    return setmetatable({
+        doms = {
+            gui_object_dom = {
+                dom = gui_object_dom.from_gui_object(gui_object),
+                parser = gui_object_parser,
+            }
+        }
+    }, gui_object_css)
+end
+
+function gui_object_css.with_ui_corner(self, ui_corner)
+    self.doms.ui_corner_dom = {
+        dom = ui_corner_dom.from_ui_corner(ui_corner),
+        parser = ui_corner_parser,
+    }
+    return self
+end
+
+function gui_object_css.get_css(self)
     local css = ''
-    
-    for k, v in gui_object_parser do
-        if not v(dom) then
-            continue
+
+    for dom_name, dom_info in (self.doms :: any) :: { [string]: { dom: { [string]: any }, parser: { [string]: (any) -> () } } } do
+        for name, callback in dom_info.parser do
+            if not callback(dom_info.dom) then
+                continue
+            end
+
+            css ..= `{name}: {callback(dom_info.dom)};\n`
         end
-        css ..= `{k}: {v(dom)};\n`
     end
 
     return css
 end
 
-local function from_gui_object(gui_object: GuiObject): string
-    local dom =  gui_object_dom.from_gui_object(gui_object)
-
-    return parser_css(dom)
-end
-
-local function from_ui_corner(ui_corner: UICorner): string
-    local dom =  ui_corner_dom.from_ui_corner(ui_corner)
-
-    return parser_css(dom)
-end
-
-return {
-    from_gui_object = from_gui_object,
-    from_ui_corner = from_ui_corner,
-}
+return gui_object_css
