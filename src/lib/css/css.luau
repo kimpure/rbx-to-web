@@ -51,9 +51,7 @@ end
 function gui_object_css.get_css(self)
 	local css = ""
 
-	for dom_name, dom_info in
-		(self.doms :: any) :: { [string]: { dom: { [string]: any }, parser: { [string]: (...any) -> (string) } } }
-	do
+	for dom_name, dom_info in (self.doms :: any) :: { [string]: { dom: { [string]: any }, parser: { [string]: (...any) -> string } } } do
 		for name, callback in dom_info.parser do
 			local parse_css = callback(dom_info.dom)
 			if not parse_css then
@@ -63,7 +61,7 @@ function gui_object_css.get_css(self)
 			css ..= `{name}: {parse_css};\n`
 		end
 	end
-	
+
 	return css
 end
 
