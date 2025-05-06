@@ -1,11 +1,10 @@
 local ui = require("./utils/ui")
-local gui_object = require("./gui_object")
 
 export type UICornerDomProps = {
 	corner_radius: ui.Ui,
 }
 
-export type UICornerDom = typeof(setmetatable({} :: UICornerDomProps, {})) & gui_object.GuiObjectDom
+export type UICornerDom = typeof(setmetatable({} :: UICornerDomProps, {}))
 
 local ui_corner_parser = {}
 ui_corner_parser["CornerRadius"] = function(dom: UICornerDom, value: UDim)

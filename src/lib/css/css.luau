@@ -50,7 +50,8 @@ function gui_object_css.with_ui_corner(self, ui_corner)
 end
 
 function gui_object_css.get_css(self)
-	local css = ""
+	local css = ''
+	local parse_css = {}
 	local levels = {}
 
 	for dom_name, dom_info in (self.doms :: any) :: { [string]: { dom: { [string]: any }, parser: { [string]: (...any) -> (string, number) } } } do
@@ -61,7 +62,7 @@ function gui_object_css.get_css(self)
 		end
 		
 		for css_prop_name, css_format_callback in dom_info.parser do
-			local parse_css, level = css_format_callback(props)
+			local css_value, level = css_format_callback(props)
 			level = level or 1
 
 			if not levels[css_prop_name] then
@@ -72,12 +73,16 @@ function gui_object_css.get_css(self)
 				continue
 			end
 
-			if not parse_css then
+			if not css_value then
 				continue
 			end
 
-			css ..= `{css_prop_name}: {parse_css};\n`
+			parse_css[css_prop_name] = css_value
 		end
+	end
+	
+	for css_prop_name, css_prop_value in parse_css do
+		css ..= `{css_prop_name}: {css_prop_value};\n`
 	end
 
 	return css
