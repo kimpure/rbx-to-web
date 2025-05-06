@@ -15,15 +15,7 @@ html, body {
 
 net.serve(8080, {
 	handleRequest = function(request)
-		if request.path == "/" then
-			return {
-				status = 200,
-				headers = {
-					["Content-Type"] = "text/html; charset=utf-8",
-				},
-				body = fs.readFile("tests/web/view/index.html"),
-			}
-		elseif request.path == "/style.css" then
+		if request.path == "/style.css" then
 			return {
 				status = 200,
 				headers = {
@@ -33,6 +25,12 @@ net.serve(8080, {
 			}
 		end
 
-		return nil :: any
+		return {
+			status = 200,
+			headers = {
+				["Content-Type"] = "text/html; charset=utf-8",
+			},
+			body = fs.readFile("tests/web/view/index.html"),
+		}
 	end,
 })
