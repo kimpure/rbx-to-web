@@ -9,7 +9,7 @@ local token = require('./parser/token')
 export type GuiObjectCss = typeof(setmetatable(
 	{} :: {
 		doms: {
-			['gui_object']: {
+			gui_object: {
 				dom: gui_object_dom.GuiObjectDom,
 				parser: typeof(gui_object_parser),
 			},
@@ -60,8 +60,8 @@ function gui_object_css.get_css(self)
 		end
 		
 		for css_prop_name, css_format_callback in dom_info.parser do
-			
 			local parse_css = css_format_callback(props)
+
 			if not parse_css then
 				continue
 			end
