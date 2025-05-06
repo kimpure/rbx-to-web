@@ -57,12 +57,12 @@ function gui_object_css.get_css(self)
 		local props = {}
 
 		for extend_dom_name, _ in extends[dom_name] do
-			props[extend_dom_name] = self.doms[extend_dom_name]
+			props[extend_dom_name] = self.doms[extend_dom_name].dom
 		end
 		
 		for css_prop_name, css_format_callback in dom_info.parser do
 			
-			local parse_css = css_format_callback(dom_info.dom)
+			local parse_css = css_format_callback(props)
 			if not parse_css then
 				continue
 			end
