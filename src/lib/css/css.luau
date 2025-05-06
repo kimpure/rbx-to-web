@@ -3,14 +3,16 @@ local gui_object_parser = require("./parser/gui_object")
 local ui_corner_dom = require("../dom/ui_corner")
 local ui_corner_parser = require("./parser/ui_corner")
 
+local extends = require('./parser/extends')
+
 export type GuiObjectCss = typeof(setmetatable(
 	{} :: {
 		doms: {
-			gui_object_dom: {
+			gui_object: {
 				dom: gui_object_dom.GuiObjectDom,
 				parser: typeof(gui_object_parser),
 			},
-			ui_corner_dom: {
+			ui_corner: {
 				dom: ui_corner_dom.UICornerDom,
 				parser: typeof(ui_corner_parser),
 			}?,
@@ -32,7 +34,7 @@ gui_object_css.__index = gui_object_css
 function gui_object_css.from_gui_object(gui_object: GuiObject)
 	return setmetatable({
 		doms = {
-			gui_object_dom = {
+			gui_object = {
 				dom = gui_object_dom.from_gui_object(gui_object),
 				parser = gui_object_parser,
 			},
@@ -41,7 +43,7 @@ function gui_object_css.from_gui_object(gui_object: GuiObject)
 end
 
 function gui_object_css.with_ui_corner(self, ui_corner)
-	self.doms.ui_corner_dom = {
+	self.doms.ui_corner = {
 		dom = ui_corner_dom.from_ui_corner(ui_corner),
 		parser = ui_corner_parser,
 	}
@@ -52,13 +54,20 @@ function gui_object_css.get_css(self)
 	local css = ""
 
 	for dom_name, dom_info in (self.doms :: any) :: { [string]: { dom: { [string]: any }, parser: { [string]: (...any) -> string } } } do
-		for name, callback in dom_info.parser do
-			local parse_css = callback(dom_info.dom)
+		local props = {}
+
+		for extend_dom_name, _ in extends[dom_name] do
+			props[extend_dom_name] = self.doms[extend_dom_name]
+		end
+		
+		for css_prop_name, css_format_callback in dom_info.parser do
+			
+			local parse_css = css_format_callback(dom_info.dom)
 			if not parse_css then
 				continue
 			end
 
-			css ..= `{name}: {parse_css};\n`
+			css ..= `{css_prop_name}: {parse_css};\n`
 		end
 	end
 
