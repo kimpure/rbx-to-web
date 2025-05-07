@@ -44,19 +44,19 @@ gui_object_css_parser["overflow"] = function(doms: { gui_object: gui_object_dom.
 end
 gui_object_css_parser["height"] = function(doms: { gui_object: gui_object_dom.GuiObjectDom })
 	local dom = doms.gui_object
-	if dom.automatic_size == "Y" or dom.automatic_size == "XY" then
-		return "auto"
-	else
+	-- if dom.automatic_size == "Y" or dom.automatic_size == "XY" then
+		-- return "auto"
+	-- else
 		return calc.from_ui(dom.size.y)
-	end
+	-- end
 end
 gui_object_css_parser["width"] = function(doms: { gui_object: gui_object_dom.GuiObjectDom })
 	local dom = doms.gui_object
-	if dom.automatic_size == "X" or dom.automatic_size == "XY" then
-		return "auto"
-	else
+	-- if dom.automatic_size == "X" or dom.automatic_size == "XY" then
+		-- return "auto"
+	-- else
 		return calc.from_ui(dom.size.x)
-	end
+	-- end
 end
 gui_object_css_parser["min-height"] = function(doms: { gui_object: gui_object_dom.GuiObjectDom })
 	local dom = doms.gui_object
