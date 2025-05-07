@@ -44,7 +44,7 @@ gui_object_css_parser["overflow"] = function(doms: { gui_object: gui_object_dom.
 end
 gui_object_css_parser["height"] = function(doms: { gui_object: gui_object_dom.GuiObjectDom })
 	local dom = doms.gui_object
-	if dom.automatic_size == "Y" or dom.automatic_size == "XY" or dom.size_constraint == "RelativeXX" then
+	if dom.automatic_size == "Y" or dom.automatic_size == "XY" then
 		return "auto"
 	else
 		return calc.from_ui(dom.size.y)
@@ -52,7 +52,7 @@ gui_object_css_parser["height"] = function(doms: { gui_object: gui_object_dom.Gu
 end
 gui_object_css_parser["width"] = function(doms: { gui_object: gui_object_dom.GuiObjectDom })
 	local dom = doms.gui_object
-	if dom.automatic_size == "X" or dom.automatic_size == "XY" or dom.size_constraint == "RelativeYY" then
+	if dom.automatic_size == "X" or dom.automatic_size == "XY" then
 		return "auto"
 	else
 		return calc.from_ui(dom.size.x)
@@ -72,18 +72,18 @@ gui_object_css_parser["min-width"] = function(doms: { gui_object: gui_object_dom
 	end
 	return calc.from_ui(dom.size.x)
 end
-gui_object_css_parser["aspect-ratio"] = function(doms: { gui_object: gui_object_dom.GuiObjectDom })
-	local dom = doms.gui_object
-	if dom.size_constraint == "RelativeXX" then
-		return `{calc.from_ui(dom.size.x)} / {calc.from_ui(dom.size.y)}`
-	end
+-- gui_object_css_parser["aspect-ratio"] = function(doms: { gui_object: gui_object_dom.GuiObjectDom })
+-- 	local dom = doms.gui_object
+-- 	if dom.size_constraint == "RelativeXX" then
+-- 		return `{calc.from_ui(dom.size.x)} / {calc.from_ui(dom.size.y)}`
+-- 	end
 
-	if dom.size_constraint == "RelativeYY" then
-		return `{calc.from_ui(dom.size.x)} / {calc.from_ui(dom.size.y)}`
-	end
+-- 	if dom.size_constraint == "RelativeYY" then
+-- 		return `{calc.from_ui(dom.size.x)} / {calc.from_ui(dom.size.y)}`
+-- 	end
 
-	return nil :: any
-end
+-- 	return nil :: any
+-- end
 gui_object_css_parser["z-index"] = function(doms: { gui_object: gui_object_dom.GuiObjectDom })
 	local dom = doms.gui_object
 	return dom.z_index
