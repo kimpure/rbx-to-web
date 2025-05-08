@@ -20,6 +20,7 @@ export type GuiObjectDomProps = {
 	clips_descendants: boolean,
 	interactable: boolean,
 	layout_order: number,
+	parent: GuiObjectDom?,
 	position: ui2.Ui2,
 	rotation: number,
 	size: ui2.Ui2,
@@ -28,7 +29,12 @@ export type GuiObjectDomProps = {
 	z_index: number,
 }
 
-export type GuiObjectDom = typeof(setmetatable({} :: GuiObjectDomProps, {}))
+export type GuiObjectDomImpl = {
+	__index: GuiObjectDomImpl,
+	from_gui_object: (gui_object: GuiObject) -> GuiObjectDom,
+}
+
+export type GuiObjectDom = typeof(setmetatable({} :: GuiObjectDomProps, {} :: GuiObjectDomImpl))
 
 local gui_object_parser = {}
 gui_object_parser["Active"] = function(dom: GuiObjectDom, value: boolean)
@@ -64,6 +70,11 @@ end
 gui_object_parser["LayoutOrder"] = function(dom: GuiObjectDom, value: number)
 	dom.layout_order = value
 end
+gui_object_parser["Parent"] = function(dom: GuiObjectDom, value: Instance)
+	if value:IsA('GuiObject') then
+		dom.parent = dom.from_gui_object(value)
+	end
+end
 gui_object_parser["Position"] = function(dom: GuiObjectDom, value: UDim2)
 	dom.position = ui2.from_udim2(value)
 end
@@ -83,7 +94,10 @@ gui_object_parser["ZIndex"] = function(dom: GuiObjectDom, value: number)
 	dom.z_index = value
 end
 
-local function from_gui_object(gui_object: GuiObject)
+local gui_object_dom = {} :: GuiObjectDomImpl
+gui_object_dom.__index = gui_object_dom
+
+function gui_object_dom.from_gui_object(gui_object: GuiObject)
 	local dom = setmetatable({}, {}) :: GuiObjectDom
 
 	for propname, callback in gui_object_parser :: { [string]: (dom: GuiObjectDom, value: any) -> () } do
@@ -93,6 +107,4 @@ local function from_gui_object(gui_object: GuiObject)
 	return dom
 end
 
-return {
-	from_gui_object = from_gui_object,
-}
+return gui_object_dom

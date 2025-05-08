@@ -11,7 +11,6 @@ local rgb = require("../utils/rgb")
 local rgba = require("../utils/rgba")
 
 local gui_object_css_parser = {}
-
 gui_object_css_parser["background-color"] = function(doms: { gui_object: gui_object_dom.GuiObjectDom })
 	local dom = doms.gui_object
 	return rgba.from_color(dom.background_color, 1 - dom.background_transparency)
