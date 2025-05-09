@@ -56,20 +56,6 @@ gui_object_css_parser["width"] = function(doms: { gui_object: gui_object_dom.Gui
 	local dom = doms.gui_object
 	return calc.from_ui(dom.size.x)
 end
-gui_object_css_parser["min-height"] = function(doms: { gui_object: gui_object_dom.GuiObjectDom })
-	local dom = doms.gui_object
-	if dom.size_constraint == "RelativeXX" then
-		return nil :: any
-	end
-	return calc.from_ui(dom.size.y)
-end
-gui_object_css_parser["min-width"] = function(doms: { gui_object: gui_object_dom.GuiObjectDom })
-	local dom = doms.gui_object
-	if dom.size_constraint == "RelativeYY" then
-		return nil :: any
-	end
-	return calc.from_ui(dom.size.x)
-end
 gui_object_css_parser["z-index"] = function(doms: { gui_object: gui_object_dom.GuiObjectDom })
 	local dom = doms.gui_object
 	return dom.z_index
