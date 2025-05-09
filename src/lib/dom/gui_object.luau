@@ -2,7 +2,7 @@ local color = require("./utils/color")
 local ui2 = require("./utils/ui2")
 local vec2 = require("./utils/vec2")
 
-local config = require('../config')
+local config = require('./config')
 
 local gui_object_class_names = {
 	GuiObject = true,
