@@ -1,9 +1,3 @@
---[=[
-TODO: 
-
-automatic_size
-]=]
-
 local calc = require("../utils/calc")
 local gui_object_dom = require("../../dom/gui_object")
 local rgb = require("../utils/rgb")
