@@ -1,7 +1,6 @@
 --[=[
 TODO: 
 
-size_constraint
 automatic_size
 ]=]
 
@@ -13,6 +12,20 @@ local rgba = require("../utils/rgba")
 local gui_object_css_parser: { 
 	[string]: (doms: { gui_object: gui_object_dom.GuiObjectDom }) -> (any?, number?),
 } = {}
+gui_object_css_parser['aspect-ratio'] = function(doms)
+	local dom = doms.gui_object
+	return ({
+		['RelativeXX'] = function()
+			return `{dom.size.x.scale} / {dom.size.y.scale}`
+		end,
+		['RelativeXY'] = function()
+			return
+		end,
+		['RelativeYY'] = function()
+			return `{dom.size.y.scale} / {dom.size.x.scale}`
+		end,
+	})[dom.size_constraint]()
+end
 gui_object_css_parser["background-color"] = function(doms)
 	local dom = doms.gui_object
 	return rgba.from_color(dom.background_color, 1 - dom.background_transparency)
@@ -52,10 +65,16 @@ gui_object_css_parser["overflow"] = function(doms)
 end
 gui_object_css_parser["height"] = function(doms)
 	local dom = doms.gui_object
+	if dom.size_constraint == 'RelativeXX' then
+		return
+	end
 	return calc.from_ui(dom.size.y)
 end
 gui_object_css_parser["width"] = function(doms)
 	local dom = doms.gui_object
+	if dom.size_constraint == 'RelativeYY' then
+		return
+	end
 	return calc.from_ui(dom.size.x)
 end
 gui_object_css_parser["z-index"] = function(doms)
