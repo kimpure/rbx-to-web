@@ -12,7 +12,7 @@ export type GuiObjectCss = typeof(setmetatable(
 			gui_object: {
 				dom: gui_object_dom.GuiObjectDom,
 				parser: typeof(gui_object_parser),
-			},
+			}?,
 			ui_corner: {
 				dom: ui_corner_dom.UICornerDom,
 				parser: typeof(ui_corner_parser),
@@ -24,16 +24,20 @@ export type GuiObjectCss = typeof(setmetatable(
 
 export type GuiObjectCssImpl = {
 	__index: GuiObjectCssImpl,
-	from_gui_object: (gui_object: GuiObject) -> GuiObjectCss,
+	new: () -> GuiObjectCss,
 	get_css: (self: GuiObjectCss) -> string,
+	with_gui_object: (self: GuiObjectCss, gui_object: GuiObject) -> GuiObjectCss,
 	with_ui_corner: (self: GuiObjectCss, ui_corner: UICorner) -> GuiObjectCss,
 }
 
 local gui_object_css = {} :: GuiObjectCssImpl
 gui_object_css.__index = gui_object_css
 
-function gui_object_css.from_gui_object(gui_object: GuiObject)
-	local self = setmetatable({ doms = {} }, gui_object_css) :: GuiObjectCss
+function gui_object_css.new()
+	return setmetatable({ doms = {} }, gui_object_css) :: GuiObjectCss
+end
+
+function gui_object_css.with_gui_object(self, gui_object)
 	self.doms[token.gui_object] = {
 		dom = gui_object_dom.from_gui_object(gui_object),
 		parser = gui_object_parser,
@@ -58,6 +62,9 @@ function gui_object_css.get_css(self)
 		local props = {}
 
 		for extend_dom_name, _ in extends[dom_name] do
+			if not self.doms[extend_dom_name] then
+				return error(`extend error: faild {extend_dom_name}`)
+			end
 			props[extend_dom_name] = self.doms[extend_dom_name].dom
 		end
 		
