@@ -10,12 +10,14 @@ local gui_object_dom = require("../../dom/gui_object")
 local rgb = require("../utils/rgb")
 local rgba = require("../utils/rgba")
 
-local gui_object_css_parser = {}
-gui_object_css_parser["background-color"] = function(doms: { gui_object: gui_object_dom.GuiObjectDom })
+local gui_object_css_parser: { 
+	[string]: (doms: { gui_object: gui_object_dom.GuiObjectDom }) -> (any?, number?),
+} = {}
+gui_object_css_parser["background-color"] = function(doms)
 	local dom = doms.gui_object
 	return rgba.from_color(dom.background_color, 1 - dom.background_transparency)
 end
-gui_object_css_parser["box-shadow"] = function(doms: { gui_object: gui_object_dom.GuiObjectDom })
+gui_object_css_parser["box-shadow"] = function(doms)
 	local dom = doms.gui_object
 	return ({
 		["Inset"] = function(size: number, rgb: string)
@@ -29,36 +31,36 @@ gui_object_css_parser["box-shadow"] = function(doms: { gui_object: gui_object_do
 		end,
 	})[dom.border_mode](dom.border_size, rgb.from_color(dom.border_color))
 end
-gui_object_css_parser["transform"] = function(doms: { gui_object: gui_object_dom.GuiObjectDom })
+gui_object_css_parser["transform"] = function(doms)
 	local dom = doms.gui_object
 	return `rotate({dom.rotation}deg) translate({dom.anchord_point.x * 100}%, {dom.anchord_point.y * 100}%)`
 end
-gui_object_css_parser["position"] = function(doms: { gui_object: gui_object_dom.GuiObjectDom })
+gui_object_css_parser["position"] = function(doms)
 	return "relative"
 end
-gui_object_css_parser["top"] = function(doms: { gui_object: gui_object_dom.GuiObjectDom })
+gui_object_css_parser["top"] = function(doms)
 	local dom = doms.gui_object
 	return calc.from_ui(dom.position.y)
 end
-gui_object_css_parser["left"] = function(doms: { gui_object: gui_object_dom.GuiObjectDom })
+gui_object_css_parser["left"] = function(doms)
 	local dom = doms.gui_object
 	return calc.from_ui(dom.position.x)
 end
-gui_object_css_parser["overflow"] = function(doms: { gui_object: gui_object_dom.GuiObjectDom })
+gui_object_css_parser["overflow"] = function(doms)
 	local dom = doms.gui_object
 	return dom.clips_descendants and "hidden" or "visible"
 end
-gui_object_css_parser["height"] = function(doms: { gui_object: gui_object_dom.GuiObjectDom })
+gui_object_css_parser["height"] = function(doms)
 	local dom = doms.gui_object
 	return calc.from_ui(dom.size.y)
 end
-gui_object_css_parser["width"] = function(doms: { gui_object: gui_object_dom.GuiObjectDom })
+gui_object_css_parser["width"] = function(doms)
 	local dom = doms.gui_object
 	return calc.from_ui(dom.size.x)
 end
-gui_object_css_parser["z-index"] = function(doms: { gui_object: gui_object_dom.GuiObjectDom })
+gui_object_css_parser["z-index"] = function(doms)
 	local dom = doms.gui_object
 	return dom.z_index
 end
 
-return gui_object_css_parser :: { [string]: (doms: { gui_object: gui_object_dom.GuiObjectDom }) -> any }
+return gui_object_css_parser

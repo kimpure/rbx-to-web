@@ -4,8 +4,10 @@ local ui = require('../../dom/utils/ui')
 local gui_object_dom = require('../../dom/gui_object')
 local ui_corner_dom = require("../../dom/ui_corner")
 
-local ui_corner = {}
-ui_corner["border-radius"] = function(doms: { gui_object: gui_object_dom.GuiObjectDom, ui_corner: ui_corner_dom.UICornerDom })
+local ui_corner: { 
+	[string]: (doms: { gui_object: gui_object_dom.GuiObjectDom, ui_corner: ui_corner_dom.UICornerDom }) -> (string, number?) 
+} = {}
+ui_corner["border-radius"] = function(doms)
 	local gui_object = doms.gui_object
 	local ui_corner = doms.ui_corner
 
@@ -20,4 +22,4 @@ ui_corner["border-radius"] = function(doms: { gui_object: gui_object_dom.GuiObje
 	return calc.from_ui(radius), 2
 end
 
-return ui_corner :: { [string]: (dom: { gui_object: gui_object_dom.GuiObjectDom, ui_corner: ui_corner_dom.UICornerDom }) -> string }
+return ui_corner
