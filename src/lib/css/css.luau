@@ -6,7 +6,7 @@ local ui_corner_parser = require("./parser/ui_corner")
 local extends = require('./parser/extends')
 local token = require('./parser/token')
 
-export type GuiObjectCss = typeof(setmetatable(
+export type Css = typeof(setmetatable(
 	{} :: {
 		doms: {
 			gui_object: {
@@ -19,22 +19,22 @@ export type GuiObjectCss = typeof(setmetatable(
 			}?,
 		},
 	},
-	{} :: GuiObjectCssImpl
+	{} :: CssImpl
 ))
 
-export type GuiObjectCssImpl = {
-	__index: GuiObjectCssImpl,
-	new: () -> GuiObjectCss,
-	get_css: (self: GuiObjectCss) -> string,
-	with_gui_object: (self: GuiObjectCss, gui_object: GuiObject) -> GuiObjectCss,
-	with_ui_corner: (self: GuiObjectCss, ui_corner: UICorner) -> GuiObjectCss,
+export type CssImpl = {
+	__index: CssImpl,
+	new: () -> Css,
+	get_css: (self: Css) -> string,
+	with_gui_object: (self: Css, gui_object: GuiObject) -> Css,
+	with_ui_corner: (self: Css, ui_corner: UICorner) -> Css,
 }
 
-local gui_object_css = {} :: GuiObjectCssImpl
+local gui_object_css = {} :: CssImpl
 gui_object_css.__index = gui_object_css
 
 function gui_object_css.new()
-	return setmetatable({ doms = {} }, gui_object_css) :: GuiObjectCss
+	return setmetatable({ doms = {} }, gui_object_css) :: Css
 end
 
 function gui_object_css.with_gui_object(self, gui_object)

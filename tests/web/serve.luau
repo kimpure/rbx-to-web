@@ -11,7 +11,7 @@ html, body {
     padding: 0;
 }
 .target {
-]] .. css .. "}")
+]] .. css:get_css() .. "}")
 
 net.serve(8080, {
 	handleRequest = function(request)

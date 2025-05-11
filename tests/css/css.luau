@@ -5,4 +5,4 @@ local css = css_lib.new()
     :with_gui_object(instance.gui_object)
     :with_ui_corner(instance.ui_corner)
 
-return css:get_css()
+return css
