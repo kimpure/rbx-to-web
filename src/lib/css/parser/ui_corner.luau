@@ -10,12 +10,11 @@ local ui_corner: {
 ui_corner["border-radius"] = function(doms)
 	local gui_object = doms.gui_object
 	local ui_corner = doms.ui_corner
-
 	local offset = math.min(gui_object.size.x.offset, gui_object.size.y.offset)
 	local scale = math.min(gui_object.size.x.scale, gui_object.size.y.scale)
 	
 	local radius = ui.zero
-
+	
 	radius.offset = offset * ui_corner.corner_radius.offset
 	radius.scale = scale * ui_corner.corner_radius.scale
 	

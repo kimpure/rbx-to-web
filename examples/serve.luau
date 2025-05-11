@@ -3,7 +3,6 @@ local fs = require("@lune/fs")
 local roblox = require('@lune/roblox')
 
 local example_instance = (roblox.deserializeModel(fs.readFile('examples/example.rbxm'))[1] :: any) :: GuiObject
-
 local element_lib = require('../src/lib/element/element')
 local css_lib = require("../src/lib/css/css")
 
