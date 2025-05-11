@@ -1,0 +1,69 @@
+local net = require("@lune/net")
+local fs = require("@lune/fs")
+local roblox = require('@lune/roblox')
+
+local example_instance = (roblox.deserializeModel(fs.readFile('examples/example.rbxm'))[1] :: any) :: GuiObject
+
+local element_lib = require('../src/lib/element/element')
+local css_lib = require("../src/lib/css/css")
+
+local element = element_lib.new()
+element.css = css_lib.new():with_gui_object(example_instance)
+
+local function t(obj: GuiObject, ell: element_lib.Element)
+	local el = element_lib.new()
+	el.css = css_lib.new():with_gui_object(obj)
+	ell:add_child(el)
+	if obj:FindFirstChildOfClass('Frame') then
+		t(obj:FindFirstChildOfClass('Frame') :: Frame, el)
+	end
+end
+t(example_instance:FindFirstChildOfClass('Frame') :: Frame, element)
+
+fs.writeFile("examples/view/style.css", [[
+html, body {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+]] .. element:get_css())
+
+fs.writeFile("examples/view/index.html", string.format([[
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    %s
+</body>
+</html>
+
+]], element:get_html()))
+
+net.serve(8080, {
+	handleRequest = function(request)
+		if request.path == "/style.css" then
+			return {
+				status = 200,
+				headers = {
+					["Content-Type"] = "text/css; charset=utf-8",
+				},
+				body = fs.readFile("examples/view/style.css"),
+			}
+		end
+
+		return {
+			status = 200,
+			headers = {
+				["Content-Type"] = "text/html; charset=utf-8",
+			},
+			body = fs.readFile("examples/view/index.html"),
+		}
+	end,
+})

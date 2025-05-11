@@ -2,17 +2,6 @@ local color = require("./utils/color")
 local ui2 = require("./utils/ui2")
 local vec2 = require("./utils/vec2")
 
-local config = require('./config')
-
-local gui_object_class_names = {
-	GuiObject = true,
-	Frame = true,
-	TextLabel = true,
-	TextButton = true,
-	ImageLabel = true,
-	ImageButton = true
-}
-
 export type AutomaticSize = "None" | "X" | "Y" | "XY"
 
 export type BorderMode = "Outline" | "Middle" | "Inset"
@@ -28,11 +17,9 @@ export type GuiObjectDomProps = {
 	border_color: color.Color,
 	border_mode: BorderMode,
 	border_size: number,
-	childs: { [number]: GuiObjectDom },
 	clips_descendants: boolean,
 	interactable: boolean,
 	layout_order: number,
-	parent: GuiObjectDom?,
 	position: ui2.Ui2,
 	rotation: number,
 	size: ui2.Ui2,
@@ -43,8 +30,7 @@ export type GuiObjectDomProps = {
 
 export type GuiObjectDomImpl = {
 	__index: GuiObjectDomImpl,
-	config: typeof(setmetatable({} :: typeof(config), {})),
-	from_gui_object: (gui_object: GuiObject, parent: GuiObjectDom?, childs: { [number]: GuiObjectDom }?) -> GuiObjectDom,
+	from_gui_object: (gui_object: GuiObject) -> GuiObjectDom,
 }
 
 export type GuiObjectDom = typeof(setmetatable({} :: GuiObjectDomProps, {} :: GuiObjectDomImpl))
@@ -83,19 +69,6 @@ end
 gui_object_parser["LayoutOrder"] = function(dom: GuiObjectDom, value: number)
 	dom.layout_order = value
 end
-gui_object_parser["Parent"] = function(dom: GuiObjectDom, value: Instance)
-	if not config.use_dom_parent_prop then
-		return
-	end
-
-	if not value then
-		return
-	end
-
-	if gui_object_class_names[value.ClassName] then
-		dom.parent = dom.from_gui_object(value :: GuiObject)
-	end
-end
 gui_object_parser["Position"] = function(dom: GuiObjectDom, value: UDim2)
 	dom.position = ui2.from_udim2(value)
 end
@@ -117,26 +90,9 @@ end
 
 local gui_object_dom = {} :: GuiObjectDomImpl
 gui_object_dom.__index = gui_object_dom
-gui_object_dom.config = setmetatable(config, {})
 
-function gui_object_dom.from_gui_object(gui_object, parent, childs)
+function gui_object_dom.from_gui_object(gui_object)
 	local dom = setmetatable({}, {}) :: GuiObjectDom
-
-	if config.use_dom_child_prop then
-		dom.childs = {}
-	
-		for i, v in gui_object:GetChildren() do
-			if gui_object_class_names[v.ClassName] then
-				dom.childs[i] = dom.from_gui_object(v :: GuiObject)
-			end
-		end
-	else
-		dom.childs = childs or {}
-	end
-
-	if config.use_dom_parent_prop then
-		dom.parent = parent
-	end
 
 	for propname, callback in gui_object_parser :: { [string]: (dom: GuiObjectDom, value: any) -> () } do
 		callback(dom, (gui_object :: any)[propname])
