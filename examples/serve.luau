@@ -7,17 +7,18 @@ local element_lib = require('../src/lib/element/element')
 local css_lib = require("../src/lib/css/css")
 
 local element = element_lib.new()
-element.css = css_lib.new():with_gui_object(example_instance)
+element.css = css_lib.new():with_gui_object(example_instance):with_ui_corner(example_instance:FindFirstChild('UICorner') :: UICorner)
 
 local function t(obj: GuiObject, ell: element_lib.Element)
 	local el = element_lib.new()
-	el.css = css_lib.new():with_gui_object(obj)
+	el.css = css_lib.new():with_gui_object(obj):with_ui_corner(obj:FindFirstChild('UICorner') :: UICorner)
 	ell:add_child(el)
 	if obj:FindFirstChildOfClass('Frame') then
 		t(obj:FindFirstChildOfClass('Frame') :: Frame, el)
 	end
 end
 t(example_instance:FindFirstChildOfClass('Frame') :: Frame, element)
+t = nil :: any
 
 fs.writeFile("examples/view/style.css", [[
 html, body {
