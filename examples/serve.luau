@@ -7,7 +7,7 @@ local element_lib = require('../src/lib/element/element')
 local css_lib = require("../src/lib/css/css")
 
 local element = element_lib.new()
-element.css = css_lib.new():with_gui_object(example_instance):with_ui_corner(example_instance:FindFirstChild('UICorner') :: UICorner)
+element.css:with_gui_object(example_instance):with_ui_corner(example_instance:FindFirstChild('UICorner') :: UICorner)
 
 local function t(obj: GuiObject, ell: element_lib.Element)
 	local el = element_lib.new()

@@ -35,56 +35,56 @@ export type GuiObjectDomImpl = {
 
 export type GuiObjectDom = typeof(setmetatable({} :: GuiObjectDomProps, {} :: GuiObjectDomImpl))
 
-local gui_object_parser = {}
-gui_object_parser["Active"] = function(dom: GuiObjectDom, value: boolean)
+local gui_object_dom_parser = {}
+gui_object_dom_parser["Active"] = function(dom: GuiObjectDom, value: boolean)
 	dom.active = value
 end
-gui_object_parser["AnchorPoint"] = function(dom: GuiObjectDom, value: Vector2)
+gui_object_dom_parser["AnchorPoint"] = function(dom: GuiObjectDom, value: Vector2)
 	dom.anchord_point = vec2.from_vector2(value)
 end
-gui_object_parser["AutomaticSize"] = function(dom: GuiObjectDom, value: Enum.AutomaticSize)
+gui_object_dom_parser["AutomaticSize"] = function(dom: GuiObjectDom, value: Enum.AutomaticSize)
 	dom.automatic_size = value.Name :: AutomaticSize
 end
-gui_object_parser["BackgroundColor3"] = function(dom: GuiObjectDom, value: Color3)
+gui_object_dom_parser["BackgroundColor3"] = function(dom: GuiObjectDom, value: Color3)
 	dom.background_color = color.fromColor3(value)
 end
-gui_object_parser["BackgroundTransparency"] = function(dom: GuiObjectDom, value: number)
+gui_object_dom_parser["BackgroundTransparency"] = function(dom: GuiObjectDom, value: number)
 	dom.background_transparency = value
 end
-gui_object_parser["BorderColor3"] = function(dom: GuiObjectDom, value: Color3)
+gui_object_dom_parser["BorderColor3"] = function(dom: GuiObjectDom, value: Color3)
 	dom.border_color = color.fromColor3(value)
 end
-gui_object_parser["BorderMode"] = function(dom: GuiObjectDom, value: Enum.BorderMode)
+gui_object_dom_parser["BorderMode"] = function(dom: GuiObjectDom, value: Enum.BorderMode)
 	dom.border_mode = value.Name :: BorderMode
 end
-gui_object_parser["BorderSizePixel"] = function(dom: GuiObjectDom, value: number)
+gui_object_dom_parser["BorderSizePixel"] = function(dom: GuiObjectDom, value: number)
 	dom.border_size = value
 end
-gui_object_parser["ClipsDescendants"] = function(dom: GuiObjectDom, value: boolean)
+gui_object_dom_parser["ClipsDescendants"] = function(dom: GuiObjectDom, value: boolean)
 	dom.clips_descendants = value
 end
-gui_object_parser["Interactable"] = function(dom: GuiObjectDom, value: boolean)
+gui_object_dom_parser["Interactable"] = function(dom: GuiObjectDom, value: boolean)
 	dom.interactable = value
 end
-gui_object_parser["LayoutOrder"] = function(dom: GuiObjectDom, value: number)
+gui_object_dom_parser["LayoutOrder"] = function(dom: GuiObjectDom, value: number)
 	dom.layout_order = value
 end
-gui_object_parser["Position"] = function(dom: GuiObjectDom, value: UDim2)
+gui_object_dom_parser["Position"] = function(dom: GuiObjectDom, value: UDim2)
 	dom.position = ui2.from_udim2(value)
 end
-gui_object_parser["Rotation"] = function(dom: GuiObjectDom, value: number)
+gui_object_dom_parser["Rotation"] = function(dom: GuiObjectDom, value: number)
 	dom.rotation = value
 end
-gui_object_parser["Size"] = function(dom: GuiObjectDom, value: UDim2)
+gui_object_dom_parser["Size"] = function(dom: GuiObjectDom, value: UDim2)
 	dom.size = ui2.from_udim2(value)
 end
-gui_object_parser["SizeConstraint"] = function(dom: GuiObjectDom, value: Enum.SizeConstraint)
+gui_object_dom_parser["SizeConstraint"] = function(dom: GuiObjectDom, value: Enum.SizeConstraint)
 	dom.size_constraint = value.Name :: SizeConstraint
 end
-gui_object_parser["Visible"] = function(dom: GuiObjectDom, value: boolean)
+gui_object_dom_parser["Visible"] = function(dom: GuiObjectDom, value: boolean)
 	dom.visible = value
 end
-gui_object_parser["ZIndex"] = function(dom: GuiObjectDom, value: number)
+gui_object_dom_parser["ZIndex"] = function(dom: GuiObjectDom, value: number)
 	dom.z_index = value
 end
 
@@ -94,7 +94,7 @@ gui_object_dom.__index = gui_object_dom
 function gui_object_dom.from_gui_object(gui_object)
 	local dom = setmetatable({}, {}) :: GuiObjectDom
 
-	for propname, callback in gui_object_parser :: { [string]: (dom: GuiObjectDom, value: any) -> () } do
+	for propname, callback in gui_object_dom_parser :: { [string]: (dom: GuiObjectDom, value: any) -> () } do
 		callback(dom, (gui_object :: any)[propname])
 	end
 

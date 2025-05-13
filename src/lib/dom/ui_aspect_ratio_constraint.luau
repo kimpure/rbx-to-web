@@ -7,12 +7,12 @@ export type UIAspectRatioConstraintDomProps = {
 
 export type UIAspectRatioConstraintDom = typeof(setmetatable({} :: UIAspectRatioConstraintDomProps, {}))
 
-local ui_aspect_ratio_constraint_parser = {}
-ui_aspect_ratio_constraint_parser["AspectRatio"] = function(dom: UIAspectRatioConstraintDom, value: number)
+local ui_aspect_ratio_constraint_dom_parser = {}
+ui_aspect_ratio_constraint_dom_parser["AspectRatio"] = function(dom: UIAspectRatioConstraintDom, value: number)
 	dom.aspect_ratio = value
 end
-ui_aspect_ratio_constraint_parser["AspectType"] = function(dom: UIAspectRatioConstraintDom, value: Enum.AspectType) end
-ui_aspect_ratio_constraint_parser["DominantAxis"] = function(dom: UIAspectRatioConstraintDom, value: Enum.DominantAxis)
+ui_aspect_ratio_constraint_dom_parser["AspectType"] = function(dom: UIAspectRatioConstraintDom, value: Enum.AspectType) end
+ui_aspect_ratio_constraint_dom_parser["DominantAxis"] = function(dom: UIAspectRatioConstraintDom, value: Enum.DominantAxis)
 	dom.dominant_axis = value.Name :: DominantAxis
 end
 
@@ -20,7 +20,7 @@ local function from_ui_aspect_ratio_constraint(ui_aspect_ratio_constraint: UIAsp
 	local dom = setmetatable({}, {}) :: UIAspectRatioConstraintDom
 
 	for propname, callback in
-		ui_aspect_ratio_constraint_parser :: { [string]: (dom: UIAspectRatioConstraintDom, value: any) -> () }
+		ui_aspect_ratio_constraint_dom_parser :: { [string]: (dom: UIAspectRatioConstraintDom, value: any) -> () }
 	do
 		callback(dom, (ui_aspect_ratio_constraint :: any)[propname])
 	end
