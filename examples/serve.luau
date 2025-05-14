@@ -4,14 +4,13 @@ local roblox = require('@lune/roblox')
 
 local example_instance = (roblox.deserializeModel(fs.readFile('examples/example.rbxm'))[1] :: any) :: GuiObject
 local element_lib = require('../src/lib/element/element')
-local css_lib = require("../src/lib/css/css")
 
 local element = element_lib.new()
 element.css:with_gui_object(example_instance):with_ui_corner(example_instance:FindFirstChild('UICorner') :: UICorner)
 
 local function t(obj: GuiObject, ell: element_lib.Element)
 	local el = element_lib.new()
-	el.css = css_lib.new():with_gui_object(obj):with_ui_corner(obj:FindFirstChild('UICorner') :: UICorner)
+	el.css:with_gui_object(obj):with_ui_corner(obj:FindFirstChild('UICorner') :: UICorner)
 	ell:add_child(el)
 	if obj:FindFirstChildOfClass('Frame') then
 		t(obj:FindFirstChildOfClass('Frame') :: Frame, el)
@@ -41,6 +40,7 @@ fs.writeFile("examples/view/index.html", string.format([[
 </head>
 <body>
     %s
+	<script src="./style.js"></script>
 </body>
 </html>
 
@@ -55,6 +55,16 @@ net.serve(8080, {
 					["Content-Type"] = "text/css; charset=utf-8",
 				},
 				body = fs.readFile("examples/view/style.css"),
+			}
+		end
+
+		if request.path == "/style.js" then
+			return {
+				status = 200,
+				headers = {
+					["Content-Type"] = "text/js; charset=utf-8",
+				},
+				body = fs.readFile("examples/view/style.js"),
 			}
 		end
 

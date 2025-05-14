@@ -1,5 +1,4 @@
-local vec2 = require('../dom/utils/vec2')
-local css = require('../css/css')
+local css = require('../style/css/css')
 
 export type Element = typeof(setmetatable({} :: {
     css: css.Css,
@@ -9,7 +8,7 @@ export type Element = typeof(setmetatable({} :: {
 
 export type ElementImpl = {
     __index: ElementImpl,
-    new: (window_size: vec2.Vec2) -> Element,
+    new: () -> Element,
     get_html: (self: Element) -> string,
     get_css: (self: Element) -> string,
     add_child: (self: Element, child: Element) -> (),
@@ -22,9 +21,9 @@ end
 local element = {} :: ElementImpl
 element.__index = element
 
-function element.new(window_size)
+function element.new()
     return setmetatable({
-        css = css.new(window_size),
+        css = css.new(),
         childs = {},
     }, element)
 end

@@ -1,4 +1,4 @@
-local color = require("../../dom/utils/color")
+local color = require("../../../dom/utils/color")
 
 return {
 	from_color = function(color: color.Color, transparency: number)
