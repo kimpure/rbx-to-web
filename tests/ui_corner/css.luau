@@ -4,10 +4,10 @@ local gui_object_rbxm = require('@lune/fs').readFile(`tests{path_str}ui_corner{p
 
 local gui_object_instance = require('@lune/roblox').deserializeModel(gui_object_rbxm)[1] :: GuiObject
 
-local css_lib = require('../../src/lib/css/css')
+local style_lib = require('../../src/lib/style/style')
 
-local css = css_lib.new()
-css:with_gui_object(gui_object_instance)
-css:with_ui_corner(gui_object_instance:FindFirstChildOfClass('UICorner') :: UICorner)
+local style = style_lib.new()
+style:with_gui_object(gui_object_instance)
+style:with_ui_corner(gui_object_instance:FindFirstChildOfClass('UICorner') :: UICorner)
 
-print(css:get_css())
+print(style:get_css())
