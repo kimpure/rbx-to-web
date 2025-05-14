@@ -1,8 +1,8 @@
 local calc = require("../utils/calc")
-local ui = require('../../../dom/utils/ui')
+local ui = require('../../dom/utils/ui')
 
-local gui_object_dom = require('../../../dom/gui_object')
-local ui_corner_dom = require("../../../dom/ui_corner")
+local gui_object_dom = require('../../dom/gui_object')
+local ui_corner_dom = require("../../dom/ui_corner")
 
 local ui_corner: { 
 	[string]: (doms: { gui_object: gui_object_dom.GuiObjectDom, ui_corner: ui_corner_dom.UICornerDom }) -> (string, number?) 

@@ -1,7 +1,7 @@
-local css = require('../style/css/css')
+local style = require('../style/style')
 
 export type Element = typeof(setmetatable({} :: {
-    css: css.Css,
+    style: style.Style,
     childs: { [number]: Element },
     parent: Element?
 }, {} :: ElementImpl))
@@ -23,7 +23,7 @@ element.__index = element
 
 function element.new()
     return setmetatable({
-        css = css.new(),
+        style = style.new(),
         childs = {},
     }, element)
 end
@@ -63,7 +63,7 @@ function element.get_css(self)
         source ..= `.{format_class(parents[#parents - i + 1])} > `
     end
 
-    source ..= `.{format_class(self)} \{\n` .. self.css:get_css() .. '}'
+    source ..= `.{format_class(self)} \{\n` .. self.style:get_css() .. '}'
 
     for _, child in self.childs do
         source ..= '\n' .. child:get_css()

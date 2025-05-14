@@ -6,11 +6,11 @@ local example_instance = (roblox.deserializeModel(fs.readFile('examples/example.
 local element_lib = require('../src/lib/element/element')
 
 local element = element_lib.new()
-element.css:with_gui_object(example_instance):with_ui_corner(example_instance:FindFirstChild('UICorner') :: UICorner)
+element.style:with_gui_object(example_instance):with_ui_corner(example_instance:FindFirstChild('UICorner') :: UICorner)
 
 local function t(obj: GuiObject, ell: element_lib.Element)
 	local el = element_lib.new()
-	el.css:with_gui_object(obj):with_ui_corner(obj:FindFirstChild('UICorner') :: UICorner)
+	el.style:with_gui_object(obj):with_ui_corner(obj:FindFirstChild('UICorner') :: UICorner)
 	ell:add_child(el)
 	if obj:FindFirstChildOfClass('Frame') then
 		t(obj:FindFirstChildOfClass('Frame') :: Frame, el)
