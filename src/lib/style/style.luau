@@ -2,6 +2,8 @@ local gui_object_dom = require("../dom/gui_object")
 local style_parser = require("./css_parser/gui_object")
 local ui_corner_dom = require("../dom/ui_corner")
 
+local format_class_name = require('../element/utils/format_class_name')
+
 export type Style = typeof(setmetatable(
 	{} :: {
 		doms: {
@@ -50,7 +52,7 @@ function style.with_ui_corner(self, ui_corner)
 	self.doms.ui_corner = {
 		dom = ui_corner_dom.from_ui_corner(ui_corner),
 		style_js = function(class, dom) 
-			return `(new UiCorner({class}, {dom.corner_radius.offset}, {dom.corner_radius.scale})).init()`
+			return `(new UiCorner('{format_class_name(class)}', {dom.corner_radius.offset}, {dom.corner_radius.scale})).init();`
 		end,
 	}
 	return self
@@ -107,7 +109,7 @@ function style.get_style_js(self)
 		}
 	} do
 		if dom.style_js then
-			style_js ..= dom.style_js(self.class, dom.dom) .. '\n'
+			style_js ..= dom.style_js(self.class, dom.dom)
 		end
 	end
 	return style_js

@@ -39,12 +39,15 @@ fs.writeFile("examples/view/index.html", string.format([[
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    %s
+%s
 	<script src="./style.js"></script>
+	<script>
+%s
+	</script>
 </body>
 </html>
 
-]], element:get_html()))
+]], element:get_html(), element:get_style_js()))
 
 net.serve(8080, {
 	handleRequest = function(request)
