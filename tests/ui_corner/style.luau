@@ -10,4 +10,4 @@ local style = style_lib.new()
 style:with_gui_object(gui_object_instance)
 style:with_ui_corner(gui_object_instance:FindFirstChildOfClass('UICorner') :: UICorner)
 
-print(style:get_css())
+print(style:get_css(), style:get_style_js())
