@@ -3,9 +3,7 @@ local gui_object_dom = require("../../dom/gui_object")
 local rgb = require("../utils/rgb")
 local rgba = require("../utils/rgba")
 
-local gui_object_css_parser: { 
-	[string]: (doms: gui_object_dom.GuiObjectDom) -> (any?, number?),
-} = {}
+local gui_object_css_parser: { [string]: (dom: gui_object_dom.GuiObjectDom) -> (any?, number?) } = {}
 gui_object_css_parser['aspect-ratio'] = function(dom)
 	return ({
 		['RelativeXX'] = function()

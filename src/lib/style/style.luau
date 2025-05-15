@@ -1,6 +1,8 @@
 local gui_object_dom = require("../dom/gui_object")
-local style_parser = require("./css_parser/gui_object")
+local gui_object_css_parser = require("./css_parser/gui_object")
 local ui_corner_dom = require("../dom/ui_corner")
+local ui_aspect_ratio_constraint_dom = require('../dom/ui_aspect_ratio_constraint')
+local ui_aspect_ratio_constraint_css_parser = require('./css_parser/ui_aspect_ratio_constraint')
 
 local format_class_name = require('../element/utils/format_class_name')
 
@@ -9,12 +11,16 @@ export type Style = typeof(setmetatable(
 		doms: {
 			gui_object: {
 				dom: gui_object_dom.GuiObjectDom,
-				css_parser: typeof(style_parser),
+				css_parser: typeof(gui_object_css_parser),
 			}?,
 			ui_corner: {
 				dom: ui_corner_dom.UICornerDom,
 				style_js: (class: string, dom: ui_corner_dom.UICornerDom) -> (),
 			}?,
+			ui_aspect_ratio_constraint: {
+				dom: ui_aspect_ratio_constraint_dom.UIAspectRatioConstraintDom,
+				css_parser: typeof(ui_aspect_ratio_constraint_css_parser),
+			}?
 		},
 		class: string,
 	},
@@ -27,6 +33,7 @@ export type StyleImpl = {
 	get_css: (self: Style) -> string,
 	get_style_js: (self: Style) -> string,
 	with_gui_object: (self: Style, gui_object: GuiObject) -> Style,
+	with_ui_aspect_ratio_constraint: (self: Style, ui_aspect_ratio_constraint: UIAspectRatioConstraint) -> Style,
 	with_ui_corner: (self: Style, ui_corner: UICorner) -> Style,
 }
 
@@ -43,7 +50,15 @@ end
 function style.with_gui_object(self, gui_object)
 	self.doms.gui_object = {
 		dom = gui_object_dom.from_gui_object(gui_object),
-		css_parser = style_parser,
+		css_parser = gui_object_css_parser,
+	}
+	return self
+end
+
+function style.with_ui_aspect_ratio_constraint(self, ui_aspect_ratio_constraint)
+	self.doms.ui_aspect_ratio_constraint = {
+		dom = ui_aspect_ratio_constraint_dom.from_ui_aspect_ratio_constraint(ui_aspect_ratio_constraint),
+		css_parser = ui_aspect_ratio_constraint_css_parser,
 	}
 	return self
 end
@@ -66,29 +81,27 @@ function style.get_css(self)
 	for _, dom in (self.doms :: any) :: {
 		[string]: {
 			dom: any,
-			css_parser: typeof(style_parser)?,
+			css_parser: { [string]: (...any) -> (any, number?) }?,
 			style_js: (class: string, dom: ui_corner_dom.UICornerDom) -> (),
 		}
 	} do
-		if dom.css_parser then
-			for css_prop_name, css_format_callback in dom.css_parser do
-				local css_value, level = css_format_callback(dom.dom)
-				level = level or 1
+		if not dom.css_parser then
+			continue
+		end
+		
+		for css_prop_name, css_format_callback in dom.css_parser do
+			local css_value, level = css_format_callback(dom.dom)
+			level = level or 1
 
-				if not levels[css_prop_name] then
-					levels[css_prop_name] = level
-				end
-
-				if levels[css_prop_name] > level then
-					continue
-				end
-
-				if not css_value then
-					continue
-				end
-
-				parse_css[css_prop_name] = css_value
+			if not levels[css_prop_name] then
+				levels[css_prop_name] = level
 			end
+
+			if levels[css_prop_name] > level then
+				continue
+			end
+
+			parse_css[css_prop_name] = css_value
 		end
 	end
 	
@@ -104,7 +117,7 @@ function style.get_style_js(self)
 	for _, dom in (self.doms :: any) :: {
 		[string]: {
 			dom: any,
-			css_parser: typeof(style_parser)?,
+			css_parser: { [string]: (...any) -> (any, number?) }?,
 			style_js: (class: string, dom: ui_corner_dom.UICornerDom) -> string,
 		}
 	} do
