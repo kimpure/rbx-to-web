@@ -52,7 +52,7 @@ function style.with_ui_corner(self, ui_corner)
 	self.doms.ui_corner = {
 		dom = ui_corner_dom.from_ui_corner(ui_corner),
 		style_js = function(class, dom) 
-			return `(new UiCorner('{format_class_name(class)}', {dom.corner_radius.offset}, {dom.corner_radius.scale})).init();`
+			return `applyUiCornerStyle('{format_class_name(class)}', {dom.corner_radius.offset}, {dom.corner_radius.scale});`
 		end,
 	}
 	return self

@@ -29,6 +29,8 @@ html, body {
 
 ]] .. element:get_css())
 
+fs.writeFile("examples/view/style.js", fs.readFile("src/lib/style/style_js/ui_corner.js"))
+
 fs.writeFile("examples/view/index.html", string.format([[
 <!DOCTYPE html>
 <html lang="en">
@@ -37,11 +39,11 @@ fs.writeFile("examples/view/index.html", string.format([[
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="style.css">
+	<script src="./style.js"></script>
 </head>
 <body>
 %s
-	<script src="./style.js"></script>
-	<script>
+	<script defer>
 %s
 	</script>
 </body>
