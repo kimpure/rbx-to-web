@@ -1,23 +1,24 @@
 local gui_object_dom = require("../dom/gui_object")
-local gui_object_parser = require("./parser/gui_object")
+local gui_object_css_parser = require("./css_parser/gui_object")
 local ui_corner_dom = require("../dom/ui_corner")
-local ui_corner_parser = require("./parser/ui_corner")
+local ui_corner_css_parser = require("./css_parser/ui_corner")
 
-local extends = require('./parser/extends')
-local token = require('./parser/token')
+local extends = require('./css_parser/extends')
+local token = require('./css_parser/token')
 
 export type Style = typeof(setmetatable(
 	{} :: {
 		doms: {
 			gui_object: {
 				dom: gui_object_dom.GuiObjectDom,
-				parser: typeof(gui_object_parser),
+				css_parser: typeof(gui_object_css_parser),
 			}?,
 			ui_corner: {
 				dom: ui_corner_dom.UICornerDom,
-				parser: typeof(ui_corner_parser),
+				css_parser: typeof(ui_corner_css_parser),
 			}?,
 		},
+		class: string,
 	},
 	{} :: StyleImpl
 ))
@@ -34,15 +35,16 @@ local gui_object_css = {} :: StyleImpl
 gui_object_css.__index = gui_object_css
 
 function gui_object_css.new()
-	return setmetatable({ 
-		doms = {},
-	}, gui_object_css)
+	local self = setmetatable({ }, gui_object_css)
+	self.doms = {}
+	self.class = tostring(self)
+	return self
 end
 
 function gui_object_css.with_gui_object(self, gui_object)
 	self.doms[token.gui_object] = {
 		dom = gui_object_dom.from_gui_object(gui_object),
-		parser = gui_object_parser,
+		css_parser = gui_object_css_parser,
 	}
 	return self
 end
@@ -50,7 +52,7 @@ end
 function gui_object_css.with_ui_corner(self, ui_corner)
 	self.doms[token.ui_corner] = {
 		dom = ui_corner_dom.from_ui_corner(ui_corner),
-		parser = ui_corner_parser,
+		css_parser = ui_corner_css_parser,
 	}
 	return self
 end
@@ -60,7 +62,7 @@ function gui_object_css.get_css(self)
 	local parse_css = {}
 	local levels = {}
 
-	for dom_name, dom_info in (self.doms :: any) :: { [string]: { dom: { [string]: any }, parser: { [string]: (...any) -> (string, number) } } } do
+	for dom_name, dom_info in (self.doms :: any) :: { [string]: { dom: { [string]: any }, css_parser: { [string]: (...any) -> (string, number) } } } do
 		local props = {}
 
 		for extend_dom_name, _ in extends[dom_name] do
@@ -70,7 +72,7 @@ function gui_object_css.get_css(self)
 			props[extend_dom_name] = self.doms[extend_dom_name].dom
 		end
 		
-		for css_prop_name, css_format_callback in dom_info.parser do
+		for css_prop_name, css_format_callback in dom_info.css_parser do
 			local css_value, level = css_format_callback(props)
 			level = level or 1
 

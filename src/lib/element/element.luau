@@ -34,7 +34,7 @@ function element.add_child(self, child)
 end
 
 function element.get_html(self)
-    local source = `<div class="{format_class(self)}">`
+    local source = `<div class="{format_class(self.style.class)}">`
 
     for _, child in self.childs do
         source ..= child:get_html()
@@ -60,10 +60,10 @@ function element.get_css(self)
     end
 
     for i=1, #parents do
-        source ..= `.{format_class(parents[#parents - i + 1])} > `
+        source ..= `.{format_class(parents[#parents - i + 1].style.class)} > `
     end
 
-    source ..= `.{format_class(self)} \{\n` .. self.style:get_css() .. '}'
+    source ..= `.{format_class(self.style.class)} \{\n` .. self.style:get_css() .. '}'
 
     for _, child in self.childs do
         source ..= '\n' .. child:get_css()
