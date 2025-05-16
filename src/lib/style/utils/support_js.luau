@@ -1,9 +1,3 @@
-local support_js = {}
-
-function support_js.class(class_name: string, ...: any)
-
-end
-
 return {
     class = function(class_name: string, ...: any)
         local self = {
