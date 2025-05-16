@@ -11,6 +11,9 @@ element.style:with_gui_object(example_instance):with_ui_corner(example_instance:
 local function t(obj: GuiObject, ell: element_lib.Element)
 	local el = element_lib.new()
 	el.style:with_gui_object(obj):with_ui_corner(obj:FindFirstChild('UICorner') :: UICorner)
+	if obj:FindFirstChild('UIAspectRatioConstraint') then
+		el.style:with_ui_aspect_ratio_constraint(obj:FindFirstChild('UIAspectRatioConstraint') :: UIAspectRatioConstraint)
+	end
 	ell:add_child(el)
 	if obj:FindFirstChildOfClass('Frame') then
 		t(obj:FindFirstChildOfClass('Frame') :: Frame, el)
@@ -25,11 +28,15 @@ html, body {
     width: 100%;
     margin: 0;
     padding: 0;
+	background-color: black;
 }
 
 ]] .. element:get_css())
 
-fs.writeFile("examples/view/style.js", fs.readFile("src/lib/style/style_js/ui_corner.js"))
+fs.writeFile("examples/view/style.js", 
+	fs.readFile("src/lib/style/style_js/ui_corner.js")..
+	fs.readFile("src/lib/style/style_js/ui_aspect_ratio_constraint.js")
+)
 
 fs.writeFile("examples/view/index.html", string.format([[
 <!DOCTYPE html>

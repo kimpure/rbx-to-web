@@ -3,53 +3,50 @@ html, body {
     width: 100%;
     margin: 0;
     padding: 0;
+	background-color: black;
 }
 
-.luau_table0x00005c69438ceb98 {
+.luau_table0x0000641fd787f788 {
 background-color: rgba(255, 0, 0, 1);
 box-shadow: 0 0 0 0px rgb(0, 0, 0);
 left: calc(0px + 1.2711863964796066%);
 width: calc(394px + 0%);
 top: calc(0px + 4.435344785451889%);
+position: relative;
 overflow: visible;
 height: calc(171px + 0%);
 transform: rotate(0deg) translate(0%, 0%);
 z-index: 1;
-position: relative;
 }
-.luau_table0x00005c69438ceb98 > .luau_table0x00005c694391c918 {
+.luau_table0x0000641fd787f788 > .luau_table0x0000641fd78d30f8 {
 background-color: rgba(255, 136.00000709295273, 32.00000189244747, 1);
 box-shadow: 0 0 0 0px rgb(0, 0, 0);
 left: calc(0px + 29.13135588169098%);
 width: calc(1px + 100%);
 top: calc(0px + 32.390615344047546%);
+position: relative;
 overflow: visible;
 height: calc(1px + 100%);
 transform: rotate(0deg) translate(0%, 0%);
 z-index: 1;
-position: relative;
 }
-.luau_table0x00005c69438ceb98 > .luau_table0x00005c694391c918 > .luau_table0x00005c694391c258 {
+.luau_table0x0000641fd787f788 > .luau_table0x0000641fd78d30f8 > .luau_table0x0000641fd78d2a38 {
 background-color: rgba(255, 247.00001567602158, 26.00000225007534, 1);
 box-shadow: 0 0 0 0px rgb(0, 0, 0);
-left: calc(0px + 29.13135588169098%);
-width: calc(1px + 100%);
-top: calc(0px + 32.390615344047546%);
+left: calc(0px + 29.13135290145874%);
+top: calc(0px + 32.39060342311859%);
+position: relative;
 overflow: visible;
-height: calc(1px + 100%);
 transform: rotate(0deg) translate(0%, 0%);
 z-index: 1;
-position: relative;
 }
-.luau_table0x00005c69438ceb98 > .luau_table0x00005c694391c918 > .luau_table0x00005c694391c258 > .luau_table0x00005c694391bb98 {
+.luau_table0x0000641fd787f788 > .luau_table0x0000641fd78d30f8 > .luau_table0x0000641fd78d2a38 > .luau_table0x0000641fd78d2228 {
 background-color: rgba(112.0000085234642, 255, 2.000000118277967, 1);
 box-shadow: 0 0 0 0px rgb(0, 0, 0);
 left: calc(0px + 29.13135588169098%);
-width: calc(1px + 100%);
-top: calc(0px + 32.390615344047546%);
+top: calc(0px + 32.39060640335083%);
+position: relative;
 overflow: visible;
-height: calc(1px + 100%);
 transform: rotate(0deg) translate(0%, 0%);
 z-index: 1;
-position: relative;
 }
