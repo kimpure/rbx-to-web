@@ -1,13 +1,13 @@
 class UiAspectRatioConstraint {
-    constructor(class_name, size_x, size_y, aspect_ratio) {
+    constructor(class_name, size_x_offset, size_x_scale, size_y_offset, size_y_scale, aspect_ratio) {
         this.el = document.querySelector('.' + class_name);
         this.size_x = {
-            offset: size_x.offset,
-            scale: size_x.scale,
+            offset: size_x_offset,
+            scale: size_x_scale,
         };
         this.size_y = {
-            offset: size_y.offset,
-            scale: size_y.scale,
+            offset: size_y_offset,
+            scale: size_y_scale,
         };
         this.aspect_ratio = aspect_ratio;
     };
