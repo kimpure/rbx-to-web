@@ -60,7 +60,7 @@ function UiCorner.create(uiCorner: UICorner)
     return uiCornerElement
 end
 
-element.guiObject = GuiObject
-element.uiCorner = UiCorner
+element.GuiObject = GuiObject
+element.UiCorner = UiCorner
 
 return element
