@@ -77,7 +77,8 @@ javascript.class.create = function(className: string, ...: any)
     
     return self
 end
-javascript.class.method = function(self: typeof(javascript.class.create('')), methodName: string, ...: any)
+javascript.class.method = (nil :: any) :: (self: typeof(javascript.class.create('')), methodName: string, ...any) -> (typeof(javascript.class.create('')))
+javascript.class.method = function(self, methodName, ...)
     self.methods[#self.methods + 1] = {
         args = javascript.parameter.create(...),
         name = methodName,
@@ -85,8 +86,8 @@ javascript.class.method = function(self: typeof(javascript.class.create('')), me
     
     return self
 end
-javascript.class.getSource = function(self: typeof(javascript.class.create(''))) return '' end
-javascript.class.getSource = function(self: typeof(javascript.class.create('')))
+javascript.class.getSource = (nil :: any) :: (self: typeof(javascript.class.create(''))) -> (string)
+javascript.class.getSource = function(self)
     local source = `const {javascript.utils.class.formatLuauMetatableName(self)} = new {self.name}({self.args:getSource()});\n`
     
     for i=1, #self.methods do
