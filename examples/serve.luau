@@ -34,7 +34,7 @@ html, body {
 ]] .. element:get_css())
 
 fs.writeFile("examples/view/style.js", 
-	fs.readFile("src/lib/style/style_js/ui_corner.js")..
+	fs.readFile("src/lib/style/style_js/ui_corner.js").. '\n' ..
 	fs.readFile("src/lib/style/style_js/ui_aspect_ratio_constraint.js")
 )
 

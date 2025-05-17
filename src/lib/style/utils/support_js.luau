@@ -1,3 +1,17 @@
+local function format_datatype(value: any)
+    local value_type = type(value)
+    
+    if value_type == 'nil' then
+        return 'undefined'
+    end
+    
+    if value_type == 'string' then
+        return '\'' .. value .. '\''
+    end
+
+    return value
+end
+
 return {
     class = function(class_name: string, ...: any)
         local self = {
@@ -7,14 +21,8 @@ return {
         local args = table.pack(...)
 
         for i=1, args.n do
-            if args[i] == nil then
-                args[i] = 'undefined'
-            end
+            args[i] = format_datatype(args[i])
 
-            if type(args[i]) == 'string' then
-                args[i] = '\'' .. args[i] .. '\''
-            end
-            
             self.source ..= args[i] 
             
             if i ~= args.n then
@@ -33,13 +41,7 @@ return {
             local args = table.pack(...)
 
             for i=1, args.n do
-                if args[i] == nil then
-                    args[i] = 'undefined'
-                end
-
-                if type(args[i]) == 'string' then
-                    args[i] = '\'' .. args[i] .. '\''
-                end
+                args[i] = format_datatype(args[i])
                 
                 self.source ..= args[i] 
             
@@ -58,5 +60,5 @@ return {
         end
 
         return setmetatable(self, impl)
-    end
+    end,
 }

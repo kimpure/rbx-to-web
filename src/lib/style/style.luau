@@ -78,7 +78,7 @@ function style.with_ui_aspect_ratio_constraint(self, ui_aspect_ratio_constraint)
 			if dom.aspect_type ~= 'FitWithinMaxSize' then
 				return ''
 			end
-
+			
 			return support_js.class('UiAspectRatioConstraint', 
 				format_class_name(class), 
 				dom.parent.size.x.offset,
@@ -155,7 +155,7 @@ function style.get_style_js(self)
 		}
 	} do
 		if dom.style_js then
-			style_js ..= dom.style_js(self.class, dom.dom)
+			style_js ..= dom.style_js(self.class, dom.dom) .. '\n'
 		end
 	end
 	return style_js

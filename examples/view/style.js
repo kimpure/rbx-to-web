@@ -13,20 +13,21 @@ class UiCorner {
         }
     }
 }
+
 class UiAspectRatioConstraint {
-    constructor(class_name, size_x_offset, size_x_scale, size_y_offset, size_y_scale, aspect_ratio) {
+    constructor(class_name, size_x, size_y, aspect_ratio) {
         this.el = document.querySelector('.' + class_name);
         this.size_x = {
-            offset: size_x_offset,
-            scale: size_x_scale,
+            offset: size_x.offset,
+            scale: size_x.scale,
         };
         this.size_y = {
-            offset: size_y_offset,
-            scale: size_y_scale,
+            offset: size_y.offset,
+            scale: size_y.scale,
         };
         this.aspect_ratio = aspect_ratio;
     };
-// 215, 134
+    
     apply() {
         const offsetHeight = this.el.offsetHeight;
         const offsetWidth = this.el.offsetWidth;
@@ -36,10 +37,7 @@ class UiAspectRatioConstraint {
             this.el.style['aspect-ratio'] = `${this.aspect_ratio} / 1`;
         } else {
             this.el.style.width = `calc(${this.size_x.offset}px + ${this.size_x.scale * 100}%)`;
-            this.el.style['aspect-ratio'] = `1/ ${this.aspect_ratio}`;
+            this.el.style['aspect-ratio'] = `1 / ${this.aspect_ratio}`;
         };
-
-        
-        console.log(this.el.offsetWidth, this.el.offsetHeight)
     };
 }
