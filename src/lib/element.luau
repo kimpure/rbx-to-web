@@ -1,7 +1,8 @@
 local element = {}
 
-element.guiObject = {}
-element.guiObject.create = function(guiObject: GuiObject)
+local GuiObject = {}
+
+function GuiObject.create(guiObject: GuiObject)
     local guiObjectElement = {}
 
     guiObjectElement.active = guiObject.Active
@@ -45,5 +46,21 @@ element.guiObject.create = function(guiObject: GuiObject)
 
     return guiObjectElement
 end
+
+local UiCorner = {}
+
+function UiCorner.create(uiCorner: UICorner)
+    local uiCornerElement = {
+        cornerRadius = {
+            offset = uiCorner.CornerRadius.Offset,
+            scale = uiCorner.CornerRadius.Scale
+        },
+    }
+
+    return uiCornerElement
+end
+
+element.guiObject = GuiObject
+element.uiCorner = UiCorner
 
 return element

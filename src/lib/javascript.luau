@@ -1,15 +1,15 @@
 local javascript = {}
 
-javascript.config = {}
-javascript.config.tab = '    '
+local Config = {}
+Config.tab = '    '
 
-javascript.utils = {}
-javascript.utils.class = {}
-javascript.utils.class.formatLuauMetatableName = function(metatable: any)
+local Utils = {}
+
+function Utils.formatLuauMetatableName(metatable: any)
     return `luau_{string.gsub(string.gsub(tostring(metatable), ' ', ''), ':', '')}`
 end
-javascript.utils.dataType = {}
-javascript.utils.dataType.formatLuauData = function(data: any)
+
+function Utils.formatLuauData(data: any)
     local dataType = type(data)
 
     if dataType == 'string' then
@@ -25,11 +25,11 @@ javascript.utils.dataType.formatLuauData = function(data: any)
 
         for key, value in data do
             if type(value) == 'table' then
-                source ..= string.gsub(`{javascript.config.tab}['{key}']: {javascript.utils.dataType.formatLuauData(value)}, `, '\n', '\n' .. javascript.config.tab) .. '\n'
+                source ..= string.gsub(`{Config.tab}['{key}']: {Utils.formatLuauData(value)}, `, '\n', '\n' .. Config.tab) .. '\n'
 
                 continue
             end
-            source ..= `{javascript.config.tab}['{key}']: {javascript.utils.dataType.formatLuauData(value)}, \n`
+            source ..= `{Config.tab}['{key}']: {Utils.formatLuauData(value)}, \n`
         end
 
         return source .. '}'
@@ -38,20 +38,29 @@ javascript.utils.dataType.formatLuauData = function(data: any)
     return data
 end
 
-javascript.parameter = {}
-javascript.parameter.__index = javascript.parameter
-javascript.parameter.create = function(...: any)
-    local self = setmetatable({}, javascript.parameter)
+local Parameter = {}
+Parameter.__index = Parameter
+
+export type Parameter = typeof(setmetatable({} :: {
+    args: { 
+        [number]: any, 
+        n: number,
+    },
+}, Parameter))
+
+function Parameter.create(...: any): Parameter
+    local self = setmetatable({}, Parameter)
     
     self.args = table.pack(...)
     
     return self
 end
-javascript.parameter.getSource = function(self: typeof(javascript.parameter.create()))
+
+function Parameter.getSource(self: Parameter): string
     local source = ''
     
     for i=1, self.args.n do
-        source ..= javascript.utils.dataType.formatLuauData(self.args[i])
+        source ..= Utils.formatLuauData(self.args[i])
 
         if i ~= self.args.n then
             source ..= ', '
@@ -61,37 +70,44 @@ javascript.parameter.getSource = function(self: typeof(javascript.parameter.crea
     return source
 end
 
-javascript.class = {}
-javascript.class.__index = javascript.class
-javascript.class.create = function(className: string, ...: any)
-    local self = setmetatable({}, javascript.class)
-    
-    self.args = javascript.parameter.create(...)
-    self.name = className
-    self.methods = {} :: { 
+local Class = {}
+Class.__index = Class
+
+export type Class = typeof(setmetatable({} :: {
+    args: Parameter,
+    name: string,
+    methods: {
         [number]: {
-            args: typeof(javascript.parameter.create()),
+            args: Parameter,
             name: string,
         }
     }
+}, Class))
+
+function Class.create(className: string, ...: any): Class
+    local self = setmetatable({}, Class)
+    
+    self.args = Parameter.create(...)
+    self.name = className
+    self.methods = {}
     
     return self
 end
-javascript.class.method = (nil :: any) :: (self: typeof(javascript.class.create('')), methodName: string, ...any) -> (typeof(javascript.class.create('')))
-javascript.class.method = function(self, methodName, ...)
+
+function Class.method(self: Class, methodName: string, ...: any): Class
     self.methods[#self.methods + 1] = {
-        args = javascript.parameter.create(...),
+        args = Parameter.create(...),
         name = methodName,
     }
     
     return self
 end
-javascript.class.getSource = (nil :: any) :: (self: typeof(javascript.class.create(''))) -> (string)
-javascript.class.getSource = function(self)
-    local source = `const {javascript.utils.class.formatLuauMetatableName(self)} = new {self.name}({self.args:getSource()});\n`
+
+function Class.getSource(self: Class): string
+    local source = `const {Utils.formatLuauMetatableName(self)} = new {self.name}({self.args:getSource()});\n`
     
     for i=1, #self.methods do
-        source ..= `{javascript.utils.class.formatLuauMetatableName(self)}.{self.methods[i].name}({self.methods[i].args:getSource()});`
+        source ..= `{Utils.formatLuauMetatableName(self)}.{self.methods[i].name}({self.methods[i].args:getSource()});`
 
         if i ~= #self.methods then
             source ..= '\n'
@@ -100,5 +116,10 @@ javascript.class.getSource = function(self)
 
     return source
 end
+
+javascript.Config = Config
+javascript.Utils = Utils
+javascript.Class = Class
+javascript.Parameter = Parameter
 
 return javascript
